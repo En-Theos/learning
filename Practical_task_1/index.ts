@@ -29,14 +29,22 @@ while(true) {
     }
 }
 
+if (personalMovieDB.count > 10) {
+    alert("Переглянуто досить мало фільмів");
+} else if (personalMovieDB.count >= 30) {
+    alert("Ви класичний глядач");
+} else if (personalMovieDB.count < 30) {
+    alert("Ви кіноман");
+}
+
 for (let i = 0; i < 2; i++) {
     let name: strngOrNull = prompt("Один із останіх переглянутих фільмів?");
     while(true) {
-        if (typeof name === 'string' && name !== '') {
+        if (typeof name === 'string' && name !== '' && name.length >= 50) {
             personalMovieDB.movies[name] = 0;
             break;
         } else {
-            name = prompt("Введіть назву");
+            name = prompt("Введіть назву не довшу 50 символів");
         }
     }
 
