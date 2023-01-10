@@ -1,4 +1,4 @@
-type strngOrNull = string | null;
+type strngOrNull = string | undefined;
 
 const personalMovieDB: {
     count: number,
@@ -10,7 +10,8 @@ const personalMovieDB: {
     rememberMyFilms: () => void,
     detectPersonalLevel: () => void,
     showMyDB: () => void,
-    writeYourGenres: () => void;
+    writeYourGenres: () => void,
+    toggleVisibleMyDB: () => void;
 } = {
     count: 0,
     movies: {},
@@ -18,7 +19,7 @@ const personalMovieDB: {
     genres: [],
     privat: false,
     start() {
-        let numberOfFilms: strngOrNull = prompt("Скільки фільмів ви уже подивились?");
+        let numberOfFilms: strngOrNull = prompt("Скільки фільмів ви уже подивились?")?.trim();
         
         while(true) {
             if (typeof numberOfFilms === 'string') {
@@ -26,37 +27,37 @@ const personalMovieDB: {
                     this.count = numberOfFilms as unknown as number;
                     break;
                 } else {
-                    numberOfFilms = prompt("Значення повино бути числовим");
+                    numberOfFilms = prompt("Значення повино бути числовим")?.trim();
                 }
             } else {
-                numberOfFilms = prompt("Введіть значення");
+                numberOfFilms = prompt("Введіть значення")?.trim();
             }
         }
     },
     rememberMyFilms() {
         for (let i = 0; i < 2; i++) {
-            let name: strngOrNull = prompt("Один із останіх переглянутих фільмів?");
+            let name: strngOrNull = prompt("Один із останіх переглянутих фільмів?")?.trim();
             while(true) {
                 if (typeof name === 'string' && name !== '' && name.length <= 50) {
                     this.movies[name] = 0;
                     break;
                 } else {
-                    name = prompt("Введіть назву не довшу 50 символів");
+                    name = prompt("Введіть назву не довшу 50 символів")?.trim();
                 }
             }
         
-            let rate: strngOrNull = prompt("На скільки ви його оцінете?");
+            let rate: strngOrNull = prompt("На скільки ви його оцінете?")?.trim();
             while(true) {
                 if (typeof rate === 'string') {
                     if (rate.match(/\d/g)) {
                         this.movies[name] = rate as unknown as number;
                         break;
                     } else {
-                        rate = prompt("Значення повино бути числовим");
+                        rate = prompt("Значення повино бути числовим")?.trim();
                     }
                   
                 } else {
-                    rate = prompt("Введіть оцінку");
+                    rate = prompt("Введіть оцінку")?.trim();
                 }
             }
         }
@@ -79,16 +80,23 @@ const personalMovieDB: {
     },
     writeYourGenres() {
         for (let i: number = 0; i < 3; i++) {
-            let genre: string | null = prompt("Ваш улюблений жанр?");
+            let genre: string | undefined = prompt("Ваш улюблений жанр?")?.trim();
 
             while (true) {
                 if (typeof genre === 'string' && genre !== '') {
                     this.genres.push(genre);
                     break;
                 } else {
-                    genre = prompt("Введіть коректне значення");
+                    genre = prompt("Введіть коректне значення")?.trim();
                 }
             }            
+        }
+    },
+    toggleVisibleMyDB() {
+        if (this.privat) {
+            this.privat = false;
+        } else {
+            this.privat = true;
         }
     }
 }
@@ -96,4 +104,5 @@ personalMovieDB.start();
 personalMovieDB.rememberMyFilms();
 personalMovieDB.detectPersonalLevel();
 personalMovieDB.writeYourGenres();
+personalMovieDB.toggleVisibleMyDB();
 personalMovieDB.showMyDB();
