@@ -8,7 +8,7 @@ const movieDB: IMovieDB = {
         "Лига справедливости",
         "Ла-ла лэнд",
         "Одержимость",
-        "Скотт Пилигрим против..."
+        "Скотт Пилигрим против "
     ]
 };
 
@@ -25,14 +25,45 @@ if (poster instanceof HTMLDivElement) {
 }
 
 let parentFilms:Element | null = document.querySelector(".promo__interactive .promo__interactive-list");
-if (parentFilms instanceof Element) {
-    parentFilms.innerHTML = '';
+function generateList(): void {
+    if (parentFilms instanceof Element) {
+        parentFilms.innerHTML = '';
+    
+        movieDB.movies.forEach((item, i) => {
+            parentFilms!.innerHTML += `
+                <li class="promo__interactive-item">${i+1}: ${item.length > 21 ? item.slice(0, 21) + '...' : item}
+                    <div class="delete"></div>
+                </li>
+            `
+        });
+        parentFilms.querySelectorAll(".promo__interactive-item .delete").forEach((item, i) => {
+            item.addEventListener("click", () => {
+                item.parentElement?.remove(); 
+                movieDB.movies.splice(i, 1);
+                generateList();
+            });
+        });
+    }
+}generateList();
 
-    movieDB.movies.forEach((item, i) => {
-        parentFilms!.innerHTML += `
-            <li class="promo__interactive-item">${i+1}: ${item}
-                <div class="delete"></div>
-            </li>
-        `
+let formAddFilm: Element | null = document.querySelector("form.add ");
+
+if (formAddFilm instanceof Element) {
+    formAddFilm.querySelector("button")?.addEventListener('click', (e) => {
+        e.preventDefault();
+        let input: HTMLInputElement | null = formAddFilm!.querySelector(".adding__input");
+        
+        if (input instanceof HTMLInputElement && input.value.trim() !== "") {
+            let check: HTMLInputElement | null = formAddFilm!.querySelector<HTMLInputElement>("[type='checkbox']" );
+
+            if (check?.checked) {
+                console.log("Добавлено в улюбленні");
+                check.checked = false;
+            }
+
+            movieDB.movies.push(input.value);
+            generateList();
+            input.value = "";
+        }
     });
 }
