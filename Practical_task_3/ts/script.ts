@@ -1,4 +1,7 @@
-const parentButtonsTabs: HTMLDivElement | null = document.querySelector(".tabheader__items");
+type span = HTMLSpanElement | null;
+type div = HTMLDivElement | null;
+
+const parentButtonsTabs: div = document.querySelector(".tabheader__items");
 const buttonsTabs: NodeListOf<HTMLDivElement> = document.querySelectorAll(".tabheader__items .tabheader__item");
 const tabContents: NodeListOf<HTMLDivElement> = document.querySelectorAll(".tabcontainer .tabcontent");
 
@@ -17,8 +20,6 @@ parentButtonsTabs?.addEventListener("click", (event) => {
         });
     }
 });
-
-type span = HTMLSpanElement | null;
 
 const daysBox: span = document.querySelector(".timer__block #days");
 const hoursBox: span = document.querySelector(".timer__block #hours");
@@ -42,3 +43,39 @@ const interval = setInterval(() => {
         clearInterval(interval);
     }
 }, 1000);
+
+const modal: div = document.querySelector(".modal");
+const btnCloseModal: div = document.querySelector("[data-close]");
+const btnsShowModal: NodeListOf<HTMLDivElement> = document.querySelectorAll("[data-modal]");
+
+const timerShowModal: number = setTimeout(() => {if (modal) modal.style.display = "block"}, 300000);
+
+btnsShowModal.forEach(button => {
+    button.addEventListener("click", () => {
+        if (modal) modal.style.display = "block";
+        clearTimeout(timerShowModal);
+    });
+});
+
+btnCloseModal?.addEventListener("click", () => {
+    if (modal) modal.style.display = "none";
+});
+
+modal?.addEventListener("click", (event) => {
+    const target: HTMLDivElement = (event.target as HTMLDivElement);
+
+    if (target.classList.contains("modal")) {
+        if (modal) modal.style.display = "none";
+    }
+});
+
+window.addEventListener("scroll", function fun() {
+    const top: number = document.documentElement.scrollTop;
+    const wind: number = document.documentElement.clientHeight;
+    const allScroll: number = document.documentElement.scrollHeight;
+
+    if (top + wind >= allScroll - 1) {
+        if (modal) modal.style.display = "block";
+        window.removeEventListener("scroll", fun);
+    }
+});

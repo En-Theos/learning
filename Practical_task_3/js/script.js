@@ -19,7 +19,7 @@ const daysBox = document.querySelector(".timer__block #days");
 const hoursBox = document.querySelector(".timer__block #hours");
 const minutesBox = document.querySelector(".timer__block #minutes");
 const secondsBox = document.querySelector(".timer__block #seconds");
-setInterval(() => {
+const interval = setInterval(() => {
     const t = new Date("2023-01-22").getTime() - new Date().getTime();
     const days = Math.floor(t / 1000 / 60 / 60 / 24);
     const hours = Math.floor(t / 1000 / 60 / 60 % 24);
@@ -31,4 +31,40 @@ setInterval(() => {
         minutesBox.textContent = minutes < 10 ? "0" + minutes : minutes + "";
         secondsBox.textContent = seconds < 10 ? "0" + seconds : seconds + "";
     }
+    else {
+        clearInterval(interval);
+    }
 }, 1000);
+const modal = document.querySelector(".modal");
+const btnCloseModal = document.querySelector("[data-close]");
+const btnsShowModal = document.querySelectorAll("[data-modal]");
+const timerShowModal = setTimeout(() => { if (modal)
+    modal.style.display = "block"; }, 300000);
+btnsShowModal.forEach(button => {
+    button.addEventListener("click", () => {
+        if (modal)
+            modal.style.display = "block";
+        clearTimeout(timerShowModal);
+    });
+});
+btnCloseModal === null || btnCloseModal === void 0 ? void 0 : btnCloseModal.addEventListener("click", () => {
+    if (modal)
+        modal.style.display = "none";
+});
+modal === null || modal === void 0 ? void 0 : modal.addEventListener("click", (event) => {
+    const target = event.target;
+    if (target.classList.contains("modal")) {
+        if (modal)
+            modal.style.display = "none";
+    }
+});
+window.addEventListener("scroll", function fun() {
+    const top = document.documentElement.scrollTop;
+    const wind = document.documentElement.clientHeight;
+    const allScroll = document.documentElement.scrollHeight;
+    if (top + wind >= allScroll - 1) {
+        if (modal)
+            modal.style.display = "block";
+        window.removeEventListener("scroll", fun);
+    }
+});
