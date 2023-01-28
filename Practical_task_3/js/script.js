@@ -40,22 +40,35 @@ const btnCloseModal = document.querySelector("[data-close]");
 const btnsShowModal = document.querySelectorAll("[data-modal]");
 const timerShowModal = setTimeout(() => { if (modal)
     modal.style.display = "block"; }, 300000);
+function showModal() {
+    if (modal)
+        modal.style.display = "block";
+    clearTimeout(timerShowModal);
+}
+function hideModal() {
+    var _a;
+    if (modal) {
+        modal.style.display = "none";
+        (_a = modal.querySelector("p.modal__title")) === null || _a === void 0 ? void 0 : _a.remove();
+        const form = modal.querySelector("form");
+        if (form) {
+            form.style.display = "block";
+        }
+    }
+    ;
+}
 btnsShowModal.forEach(button => {
     button.addEventListener("click", () => {
-        if (modal)
-            modal.style.display = "block";
-        clearTimeout(timerShowModal);
+        showModal();
     });
 });
 btnCloseModal === null || btnCloseModal === void 0 ? void 0 : btnCloseModal.addEventListener("click", () => {
-    if (modal)
-        modal.style.display = "none";
+    hideModal();
 });
 modal === null || modal === void 0 ? void 0 : modal.addEventListener("click", (event) => {
     const target = event.target;
     if (target.classList.contains("modal")) {
-        if (modal)
-            modal.style.display = "none";
+        hideModal();
     }
 });
 window.addEventListener("scroll", function fun() {
@@ -63,8 +76,7 @@ window.addEventListener("scroll", function fun() {
     const wind = document.documentElement.clientHeight;
     const allScroll = document.documentElement.scrollHeight;
     if (top + wind >= allScroll - 1) {
-        if (modal)
-            modal.style.display = "block";
+        showModal();
         window.removeEventListener("scroll", fun);
     }
 });
@@ -99,3 +111,55 @@ if (parentCard) {
     new Card(parentCard, "img/tabs/post.jpg", "post", "Меню 'Постное'", "Меню 'Постное' - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.", 240).generate();
     new Card(parentCard, "img/tabs/elite.jpg", "elite", "Меню 'Премиум'", "В меню 'Премиум' мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!", 270).generate();
 }
+const form = document.querySelectorAll("form");
+form.forEach(item => {
+    item.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const request = new XMLHttpRequest();
+        request.open("POST", "../server.php");
+        request.setRequestHeader("Content-type", "aplication/json");
+        const loadImg = document.createElement("img");
+        loadImg.src = "../img/spinner.svg";
+        loadImg.style.display = "block";
+        loadImg.style.margin = "0 auto";
+        item.insertAdjacentElement("beforeend", loadImg);
+        const formData = new FormData(item);
+        let postJSON = {
+            name: "",
+            phone: ""
+        };
+        formData.forEach((value, key) => {
+            switch (key) {
+                case "name":
+                    postJSON.name = value.toString();
+                    break;
+                case "phone":
+                    postJSON.phone = value.toString();
+                    break;
+            }
+        });
+        request.send(JSON.stringify(postJSON));
+        request.addEventListener("load", () => {
+            loadImg.remove();
+            if (request.status === 200) {
+                generateMessage("Відправлено");
+                item.reset();
+            }
+            else {
+                generateMessage("Помилка");
+            }
+        });
+    });
+});
+const generateMessage = (message) => {
+    var _a;
+    showModal();
+    const form = modal === null || modal === void 0 ? void 0 : modal.querySelector("form");
+    if (form && modal) {
+        form.style.display = "none";
+        (_a = modal.querySelector(".modal__content")) === null || _a === void 0 ? void 0 : _a.insertAdjacentHTML("afterbegin", `<p class="modal__title">${message}</p>`);
+        setTimeout(() => {
+            hideModal();
+        }, 3000);
+    }
+};

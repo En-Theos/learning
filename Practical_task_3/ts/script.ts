@@ -1,5 +1,6 @@
 type span = HTMLSpanElement | null;
 type div = HTMLDivElement | null;
+type form = HTMLFormElement | null;
 
 const parentButtonsTabs: div = document.querySelector(".tabheader__items");
 const buttonsTabs: NodeListOf<HTMLDivElement> = document.querySelectorAll(".tabheader__items .tabheader__item");
@@ -50,22 +51,38 @@ const btnsShowModal: NodeListOf<HTMLDivElement> = document.querySelectorAll("[da
 
 const timerShowModal: number = setTimeout(() => {if (modal) modal.style.display = "block"}, 300000);
 
+function showModal(): void {
+    if (modal) modal.style.display = "block";
+    clearTimeout(timerShowModal);
+}
+
+function hideModal(): void {
+    if (modal) {
+        modal.style.display = "none"
+        modal.querySelector("p.modal__title")?.remove();
+        const form = modal.querySelector("form");
+        
+        if (form) {
+            form.style.display = "block";
+        }
+    };
+}
+
 btnsShowModal.forEach(button => {
     button.addEventListener("click", () => {
-        if (modal) modal.style.display = "block";
-        clearTimeout(timerShowModal);
+        showModal();
     });
 });
 
 btnCloseModal?.addEventListener("click", () => {
-    if (modal) modal.style.display = "none";
+    hideModal();
 });
 
 modal?.addEventListener("click", (event) => {
     const target: HTMLDivElement = (event.target as HTMLDivElement);
 
     if (target.classList.contains("modal")) {
-        if (modal) modal.style.display = "none";
+        hideModal();
     }
 });
 
@@ -75,7 +92,7 @@ window.addEventListener("scroll", function fun() {
     const allScroll: number = document.documentElement.scrollHeight;
 
     if (top + wind >= allScroll - 1) {
-        if (modal) modal.style.display = "block";
+        showModal();
         window.removeEventListener("scroll", fun);
     }
 });
@@ -121,3 +138,69 @@ if (parentCard) {
     new Card(parentCard, "img/tabs/post.jpg", "post", "Меню 'Постное'", "Меню 'Постное' - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.", 240).generate();
     new Card(parentCard, "img/tabs/elite.jpg", "elite", "Меню 'Премиум'", "В меню 'Премиум' мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!", 270).generate();
 }  
+
+const form: NodeListOf<HTMLFormElement> = document.querySelectorAll("form"); 
+
+form.forEach(item => {
+    item.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const request: XMLHttpRequest = new XMLHttpRequest();
+
+        request.open("POST", "../server.php");
+        request.setRequestHeader("Content-type", "aplication/json");
+    
+        const loadImg: HTMLImageElement = document.createElement("img");
+        loadImg.src = "../img/spinner.svg";
+        loadImg.style.display = "block";
+        loadImg.style.margin = "0 auto";
+        item.insertAdjacentElement("beforeend" , loadImg);
+    
+        const formData: FormData = new FormData(item);
+    
+        let postJSON: {
+            name: string,
+            phone: string
+        } = {
+            name: "",
+            phone: ""
+        };
+    
+        formData.forEach((value, key) => {
+            switch (key) {
+                case "name":
+                    postJSON.name = value.toString();
+                    break;
+                case "phone":
+                    postJSON.phone = value.toString();
+                    break;
+            }
+        });
+    
+        request.send(JSON.stringify(postJSON));
+    
+        request.addEventListener("load", () => {
+            loadImg.remove();
+            if (request.status === 200) {
+                generateMessage("Відправлено");
+                item.reset();
+            } else {
+                generateMessage("Помилка");
+            }
+        });
+    });
+});
+    
+
+const generateMessage = (message: string) => {
+    showModal();
+    const form = modal?.querySelector("form");
+    if (form && modal) {
+        form.style.display = "none";
+        modal.querySelector(".modal__content")?.insertAdjacentHTML("afterbegin" ,`<p class="modal__title">${message}</p>`);
+    
+        setTimeout(() => {
+            hideModal();
+        }, 3000);
+    }
+}
