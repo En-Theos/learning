@@ -49,7 +49,7 @@ const modal: div = document.querySelector(".modal");
 const btnCloseModal: div = document.querySelector("[data-close]");
 const btnsShowModal: NodeListOf<HTMLDivElement> = document.querySelectorAll("[data-modal]");
 
-const timerShowModal: number = setTimeout(() => {if (modal) modal.style.display = "block"}, 300000);
+let timerShowModal: number = setTimeout(() => {if (modal) modal.style.display = "block"}, 300000);
 
 function showModal(): void {
     if (modal) modal.style.display = "block";
@@ -61,6 +61,7 @@ function hideModal(): void {
         modal.style.display = "none"
         modal.querySelector("p.modal__title")?.remove();
         const form = modal.querySelector("form");
+        clearTimeout(timerShowModal);
         
         if (form) {
             form.style.display = "block";
@@ -144,12 +145,6 @@ const form: NodeListOf<HTMLFormElement> = document.querySelectorAll("form");
 form.forEach(item => {
     item.addEventListener('submit', (e) => {
         e.preventDefault();
-
-        const request: XMLHttpRequest = new XMLHttpRequest();
-
-        request.open("POST", "../server.php");
-        request.setRequestHeader("Content-type", "aplication/json");
-    
         const loadImg: HTMLImageElement = document.createElement("img");
         loadImg.src = "../img/spinner.svg";
         loadImg.style.display = "block";
@@ -176,21 +171,28 @@ form.forEach(item => {
                     break;
             }
         });
-    
-        request.send(JSON.stringify(postJSON));
-    
-        request.addEventListener("load", () => {
-            loadImg.remove();
-            if (request.status === 200) {
+
+        fetch("../server.php", {
+            method: "POST", 
+            headers: {
+                "Content-type": "aplication/json"
+            }, 
+            body: JSON.stringify(postJSON)
+        }).then((data) => {
+            if (data.ok && data.status === 200) {
                 generateMessage("Відправлено");
                 item.reset();
-            } else {
-                generateMessage("Помилка");
+                return data.text();
             }
+        }).then((data) => {
+            console.log(data);
+        }).catch(() => {
+            generateMessage("Помилка");
+        }).finally(() => {
+            loadImg.remove();
         });
     });
 });
-    
 
 const generateMessage = (message: string) => {
     showModal();
@@ -199,7 +201,7 @@ const generateMessage = (message: string) => {
         form.style.display = "none";
         modal.querySelector(".modal__content")?.insertAdjacentHTML("afterbegin" ,`<p class="modal__title">${message}</p>`);
     
-        setTimeout(() => {
+        timerShowModal = setTimeout(() => {
             hideModal();
         }, 3000);
     }
