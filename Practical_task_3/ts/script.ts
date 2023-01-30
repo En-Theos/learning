@@ -2,6 +2,14 @@ type span = HTMLSpanElement | null;
 type div = HTMLDivElement | null;
 type form = HTMLFormElement | null;
 
+interface dataCard {
+    img: string,
+    altimg: string, 
+    title: string, 
+    descr: string, 
+    price: number
+}
+
 const parentButtonsTabs: div = document.querySelector(".tabheader__items");
 const buttonsTabs: NodeListOf<HTMLDivElement> = document.querySelectorAll(".tabheader__items .tabheader__item");
 const tabContents: NodeListOf<HTMLDivElement> = document.querySelectorAll(".tabcontainer .tabcontent");
@@ -99,21 +107,14 @@ window.addEventListener("scroll", function fun() {
 });
 
 class Card {
-    public parent: Element;
-    public src: string;
-    public alt: string;
-    public title: string;
-    public descr: string;
-    public price: number;
-
-    constructor(parent: Element, src: string, alt: string, title: string, descr: string, price: number) {
-        this.parent = parent;
-        this.src = src;
-        this.alt = alt
-        this.title = title;
-        this.descr = descr;
-        this.price = price;
-    }
+    constructor(
+        public parent: Element,
+        public src: string,
+        public alt: string,
+        public title: string,
+        public descr: string,
+        public price: number,
+    ) {}
 
     generate(): void {
         const card: HTMLDivElement = document.createElement("div");
@@ -135,9 +136,19 @@ class Card {
 const parentCard = document.querySelector(".menu__field .container");
 
 if (parentCard) {
-    new Card(parentCard, "img/tabs/vegy.jpg", "vegy", "Меню 'Фитнес'", "Меню 'Фитнес' - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!", 210).generate();
-    new Card(parentCard, "img/tabs/post.jpg", "post", "Меню 'Постное'", "Меню 'Постное' - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.", 240).generate();
-    new Card(parentCard, "img/tabs/elite.jpg", "elite", "Меню 'Премиум'", "В меню 'Премиум' мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!", 270).generate();
+    fetch("http://localhost:3000/menu").then((data) => {
+        if (data.ok && data.status === 200) {
+            return data.json();
+        } else {
+            parentCard.textContent = "Не вдалось загрузити меню"
+        }
+    }).then((data) => {
+        data.forEach(({img, altimg, title, descr, price}: dataCard) => {
+            new Card(parentCard, img, altimg, title, descr, price).generate();
+        });
+    }).catch(() => {
+        parentCard.textContent = "Не вдалось загрузити меню"
+    });
 }  
 
 const form: NodeListOf<HTMLFormElement> = document.querySelectorAll("form"); 
@@ -172,7 +183,7 @@ form.forEach(item => {
             }
         });
 
-        fetch("../server.php", {
+        fetch("http://localhost:3000/requests", {
             method: "POST", 
             headers: {
                 "Content-type": "aplication/json"
