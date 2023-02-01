@@ -1,4 +1,5 @@
 "use strict";
+var _a, _b;
 const parentButtonsTabs = document.querySelector(".tabheader__items");
 const buttonsTabs = document.querySelectorAll(".tabheader__items .tabheader__item");
 const tabContents = document.querySelectorAll(".tabcontainer .tabcontent");
@@ -228,3 +229,80 @@ navigableElements.forEach((element, index) => {
         switchSlide(index);
     });
 });
+const gender = document.querySelector("#gender");
+const baseParams = document.querySelector(".calculating__choose_medium");
+const activity = document.querySelector(".calculating__choose_big");
+const activitys = document.querySelectorAll(".calculating__choose_big .calculating__choose-item");
+const objParamsForCalc = {
+    gender: localStorage.getItem("gender") || "female",
+    height: 0,
+    weight: 0,
+    age: 0,
+    activity: parseFloat(localStorage.getItem("activity") || "0")
+};
+(_a = document.querySelector(`#${objParamsForCalc.gender}`)) === null || _a === void 0 ? void 0 : _a.classList.add("calculating__choose-item_active");
+(_b = document.querySelector(`[data-coefficient="${objParamsForCalc.activity}"]`)) === null || _b === void 0 ? void 0 : _b.classList.add("calculating__choose-item_active");
+gender === null || gender === void 0 ? void 0 : gender.addEventListener("click", (event) => {
+    var _a, _b;
+    const target = event.target;
+    if (target.id === "female") {
+        objParamsForCalc.gender = "female";
+        (_a = document.querySelector("#male")) === null || _a === void 0 ? void 0 : _a.classList.remove("calculating__choose-item_active");
+        target.classList.add("calculating__choose-item_active");
+        сountingСalories(objParamsForCalc);
+        localStorage.setItem("gender", "female");
+    }
+    if (target.id === "male") {
+        objParamsForCalc.gender = "male";
+        (_b = document.querySelector("#female")) === null || _b === void 0 ? void 0 : _b.classList.remove("calculating__choose-item_active");
+        target.classList.add("calculating__choose-item_active");
+        сountingСalories(objParamsForCalc);
+        localStorage.setItem("gender", "male");
+    }
+});
+baseParams === null || baseParams === void 0 ? void 0 : baseParams.addEventListener("input", (event) => {
+    const target = event.target;
+    target.value = target.value.replace(/\D/g, "");
+    if (target.id === "height") {
+        objParamsForCalc.height = parseInt(event.target.value);
+    }
+    if (target.id === "weight") {
+        objParamsForCalc.weight = parseInt(event.target.value);
+    }
+    if (target.id === "age") {
+        objParamsForCalc.age = parseInt(event.target.value);
+    }
+    сountingСalories(objParamsForCalc);
+});
+activity === null || activity === void 0 ? void 0 : activity.addEventListener("click", (event) => {
+    if (event.target.closest(".calculating__choose_big")) {
+        const value = event.target.getAttribute("data-coefficient");
+        if (value) {
+            activitys.forEach(item => item.classList.remove("calculating__choose-item_active"));
+            event.target.classList.add("calculating__choose-item_active");
+            objParamsForCalc.activity = parseFloat(value);
+            сountingСalories(objParamsForCalc);
+            localStorage.setItem("activity", value);
+        }
+    }
+});
+function сountingСalories({ gender, height, weight, age, activity }) {
+    const resultBox = document.querySelector(".calculating__result span");
+    let result = 0;
+    if (gender && height && weight && age && activity) {
+        if (gender === "male") {
+            result = (88.36 + (13.4 * weight) + (4.8 * height) - (5.7 * age)) * activity;
+        }
+        if (gender === "female") {
+            result = (447.6 + (9.2 * weight) + (3.1 * height) - (4.3 * age)) * activity;
+        }
+        if (resultBox) {
+            resultBox.textContent = Math.round(result) + "";
+        }
+    }
+    else {
+        if (resultBox) {
+            resultBox.textContent = "0";
+        }
+    }
+}
