@@ -180,3 +180,51 @@ const generateMessage = (message) => {
         }, 3000);
     }
 };
+const sliderType = document.querySelector(".tapeSlide");
+const slides = document.querySelectorAll(".offer__slide");
+const sliderNavigation = document.querySelector(".navigationSlider");
+const buttonPrev = document.querySelector(".offer__slider-prev");
+const buttonNext = document.querySelector(".offer__slider-next");
+const currentSlideBox = document.querySelector("#current");
+const totalSlideBox = document.querySelector("#total");
+const widthSlide = parseInt(window.getComputedStyle(slides[0]).width);
+let currentSlide = 0;
+if (totalSlideBox) {
+    totalSlideBox.textContent = "0" + slides.length;
+}
+const navigableElements = [];
+for (const _ of slides) {
+    const navElement = document.createElement("div");
+    navElement.classList.add("navBtn");
+    sliderNavigation === null || sliderNavigation === void 0 ? void 0 : sliderNavigation.append(navElement);
+    navigableElements.push(navElement);
+}
+navigableElements[0].classList.add("activeNavBtn");
+function switchSlide(step) {
+    currentSlide += step;
+    if (currentSlide < 0) {
+        currentSlide = slides.length - 1;
+    }
+    else if (currentSlide > slides.length - 1) {
+        currentSlide = 0;
+    }
+    navigableElements.forEach(elem => elem.classList.remove("activeNavBtn"));
+    navigableElements[currentSlide].classList.add("activeNavBtn");
+    if (sliderType && currentSlideBox) {
+        currentSlideBox.textContent = currentSlide < 9 ? "0" + (currentSlide + 1) : (currentSlide + 1) + "";
+        ;
+        sliderType.style.transform = `translateX(-${currentSlide * widthSlide}px)`;
+    }
+}
+buttonPrev === null || buttonPrev === void 0 ? void 0 : buttonPrev.addEventListener("click", () => {
+    switchSlide(-1);
+});
+buttonNext === null || buttonNext === void 0 ? void 0 : buttonNext.addEventListener("click", () => {
+    switchSlide(1);
+});
+navigableElements.forEach((element, index) => {
+    element.addEventListener("click", () => {
+        currentSlide = 0;
+        switchSlide(index);
+    });
+});
