@@ -18,3 +18,5 @@ const getTotalIncomeAmount = (data: {amount: number}[]): number => {
         return acc + item.amount;
     }, 0) : getPositiveIncomeAmount(data);
 };
+
+console.log(getTotalIncomeAmount(funds));
