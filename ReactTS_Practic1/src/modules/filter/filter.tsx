@@ -1,6 +1,6 @@
 import "./filter.scss";
 
-export default function Filter() {
+export default function Filter(): JSX.Element {
     return (
         <div className="search-panel">
             <input type="text"

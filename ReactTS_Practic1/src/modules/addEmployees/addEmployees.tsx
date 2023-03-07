@@ -1,6 +1,6 @@
 import "./addEmployees.scss";
 
-export default function AddEmployees() {
+export default function AddEmployees(): JSX.Element {
     return (
         <div className="app-add-form">
             <h3>Додайте нового працівника</h3>

@@ -1,6 +1,6 @@
 import "./info.scss";
 
-export default function Info() {
+export default function Info(): JSX.Element {
     return (
         <div className="app-info">
             <h1>Бухгалтерський облік працівників у компанії n</h1>

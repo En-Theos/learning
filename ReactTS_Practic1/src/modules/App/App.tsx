@@ -3,14 +3,22 @@ import Filter from "../filter/filter";
 import ListEmployees from "../listEmployees/listEmployees";
 import AddEmployees from "../addEmployees/addEmployees";
 
+import { IDataEmployee } from "../../interfaces/globalInterfaces";
+
 import "./app.scss";
 
-export default function App() {
+export default function App(): JSX.Element {
+  const dataEmployees: IDataEmployee[] = [
+    {name: "John C.", salary: 800, increase: false},
+    {name: "Alex M.", salary: 3000, increase: false},
+    {name: "Carl W.", salary: 5000, increase: true}
+  ];
+
   return (
     <div className="app">
       <Info/>
       <Filter/>
-      <ListEmployees/>
+      <ListEmployees data={dataEmployees}/>
       <AddEmployees/>
     </div>
   );

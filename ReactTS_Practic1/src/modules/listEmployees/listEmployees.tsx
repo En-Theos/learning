@@ -1,20 +1,25 @@
+import { ReactNode } from "react";
+import { IListEmployeesProps, IItemProps } from "./interfaces";
+
 import "./listEmployees.scss";
 
-export default function ListEmployees() {
+export default function ListEmployees({data}: IListEmployeesProps): JSX.Element {
+    const items: ReactNode[] = data.map<ReactNode>(({name, salary, increase}) => {
+        return <Item name={name} salary={salary} increase={increase}/>
+    });
+
     return (
         <ul className="app-list list-group">
-            <Item/>
-            <Item/>
-            <Item/>
+            {items}
         </ul>
     );
 }
 
-function Item() {
+function Item({name, salary, increase}: IItemProps): JSX.Element {
     return (
-        <li className="list-group-item d-flex justify-content-between">
-            <span className="list-group-item-label">John Smith</span>
-            <input type="text" className="list-group-item-input" defaultValue="1000$"/>
+        <li className={"list-group-item d-flex justify-content-between" + (increase ? " increase" : "")}>
+            <span className="list-group-item-label">{name}</span>
+            <input type="text" className="list-group-item-input" defaultValue={salary}/>
             <div className='d-flex justify-content-center align-items-center'>
                 <button type="button"
                     className="btn-cookie btn-sm ">
