@@ -9,9 +9,9 @@ import "./app.scss";
 
 export default function App(): JSX.Element {
   const dataEmployees: IDataEmployee[] = [
-    {name: "John C.", salary: 800, increase: false},
-    {name: "Alex M.", salary: 3000, increase: false},
-    {name: "Carl W.", salary: 5000, increase: true}
+    {id: 1, name: "John C.", salary: 800, increase: false},
+    {id: 2, name: "Alex M.", salary: 3000, increase: false},
+    {id: 3, name: "Carl W.", salary: 5000, increase: true}
   ];
 
   return (
