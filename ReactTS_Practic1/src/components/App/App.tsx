@@ -16,12 +16,16 @@ export default function App(): JSX.Element {
     {id: 3, name: "Carl W.", salary: 5000, increase: true, like: false}
   ]);
 
+  const [filterParam, setFilterParam] = useState<string>('');
+
   let curentMaxId = Math.max(...data.map((obj) => {
     return obj.id;
   }));
 
   function deleteEmployees(id: number): void {
-    setData(data.filter((obj) => obj.id !== id));
+    const newData = data.filter((obj) => obj.id !== id);
+
+    setData(newData);
   }
 
   function addEmployees(obj: {name: string, salary: number}): void {
@@ -38,17 +42,18 @@ export default function App(): JSX.Element {
       }
 
       return item;
-    }) ;
-    
+    });
+
     setData(newData);
   }
 
   return (
     <div className="app">
       <Info/>
-      <Filter/>
+      <Filter setFilterParam={setFilterParam} filterParam={filterParam}/>
       <ListEmployees 
-        data={data} 
+        data={data}
+        filterParam={filterParam}
         deleteEmployees={deleteEmployees} 
         changingEmployees={changingEmployees}/>
       <AddEmployees addEmployees={addEmployees}/>

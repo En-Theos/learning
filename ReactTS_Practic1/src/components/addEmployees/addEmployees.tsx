@@ -8,18 +8,20 @@ export default function AddEmployees({addEmployees}: IAddEmployeesProps): JSX.El
     const [name, setName] = useState<string>('');
     const [salary, setSalary] = useState<number | ''>('');
 
-    function onPushEmployees(event: React.FormEvent<HTMLFormElement>) {
+    function onPushEmployees(event: React.FormEvent<HTMLFormElement>): void {
         event.preventDefault();
         if (name.trim() !== '' && typeof salary === "number") {
             addEmployees({name, salary});
+            setName('');
+            setSalary('');
         }
     }
 
-    function onChangeName(event: React.ChangeEvent<HTMLInputElement>) {
+    function onChangeName(event: React.ChangeEvent<HTMLInputElement>): void {
         setName(event.target.value);
     }
 
-    function onChangeSalary(event: React.ChangeEvent<HTMLInputElement>) {
+    function onChangeSalary(event: React.ChangeEvent<HTMLInputElement>): void {
         setSalary(+event.target.value);
     }
 

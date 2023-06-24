@@ -1,18 +1,34 @@
 import { ReactNode } from "react";
 import { IListEmployeesProps, IItemProps } from "./interfaces";
+import { IDataEmployee } from "../../interfaces/globalInterfaces";
 
 import "./listEmployees.scss";
 
-export default function ListEmployees({data, deleteEmployees, changingEmployees}: IListEmployeesProps): JSX.Element {
-    const items: ReactNode[] = data.map<ReactNode>((obj) => {
-        console.log(obj.id);
+export default function ListEmployees({data, filterParam, deleteEmployees, changingEmployees}: IListEmployeesProps): JSX.Element {
+    let filterData: IDataEmployee[] = []; 
+
+    switch (filterParam) {
+        case "all":
+            filterData = data;
+            break;
+        case "promotion":
+            filterData = data.filter((obj) => obj.increase)
+            break;
+        case "salary":
+            filterData = data.filter((obj) => obj.salary > 1000)
+            break;
+        default:
+            filterData = data.filter((obj) => obj.name.includes(filterParam))
+            break;
+      }
+
+    const items: ReactNode[] = filterData.map<ReactNode>((obj) => {
         return <Item 
         key={obj.id} 
         obj={obj}
         deleteEmployees={deleteEmployees} 
         changingEmployees={changingEmployees}/>
     });
-
     return (
         <ul className="app-list list-group">
             {items}
