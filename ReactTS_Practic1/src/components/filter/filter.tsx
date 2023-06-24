@@ -1,10 +1,10 @@
 import { ReactNode, useState } from "react";
 
-import {iFilterProps} from "./interfaces"
+import {IFilterProps} from "./interfaces"
 
 import "./filter.scss";
 
-export default function Filter({setFilterParam, filterParam}: iFilterProps): JSX.Element {
+export default function Filter({setFilterParam, filterParam}: IFilterProps): JSX.Element {
     const [search, setSearch] = useState<string>('');
 
     const btn: {key: number, name: string, text: string}[] = [

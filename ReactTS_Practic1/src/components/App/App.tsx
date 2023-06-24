@@ -16,7 +16,7 @@ export default function App(): JSX.Element {
     {id: 3, name: "Carl W.", salary: 5000, increase: true, like: false}
   ]);
 
-  const [filterParam, setFilterParam] = useState<string>('');
+  const [filterParam, setFilterParam] = useState<string>('all');
 
   let curentMaxId = Math.max(...data.map((obj) => {
     return obj.id;
@@ -49,7 +49,7 @@ export default function App(): JSX.Element {
 
   return (
     <div className="app">
-      <Info/>
+      <Info data={data}/>
       <Filter setFilterParam={setFilterParam} filterParam={filterParam}/>
       <ListEmployees 
         data={data}
