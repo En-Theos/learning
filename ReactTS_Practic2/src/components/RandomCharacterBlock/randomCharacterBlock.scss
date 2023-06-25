@@ -1,0 +1,101 @@
+.randomCharacter {
+    display: flex;
+    box-shadow: 0px 0px 15px 0px #00000040;
+    article {
+        width: 50%;
+    }
+
+    .infoCharacter {
+        display: flex;
+        padding: 35px 35px 35px 40px;
+        .img {
+            padding-right: 30px;
+            img {
+                
+            }
+        }
+        .info {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            .name {
+                font-family: 'Roboto Condensed', sans-serif;
+                font-size: 22px;
+                font-weight: 700;
+                line-height: 26px;
+                letter-spacing: 0em;
+                text-align: left;
+            }
+            .description {
+                font-family: 'Roboto Condensed', sans-serif;
+                font-size: 14px;
+                font-weight: 400;
+                line-height: 16px;
+                letter-spacing: 0em;
+                text-align: left;
+                height: 90px;
+            }
+            .btn {
+                .homepage {
+                    width: 101px;
+                    height: 38px;
+                    color: white;
+                    font-family: 'Roboto Condensed', sans-serif;
+                    font-size: 14px;
+                    font-weight: 400;
+                    line-height: 16px;
+                    letter-spacing: 0em;
+                    background-color: #ffffff;
+                    background-image: url('../../images/buttons/buttonRed.png');
+                    margin-right: 30px;
+                }
+                .wiki {
+                    width: 101px;
+                    height: 38px;
+                    color: white;
+                    font-family: 'Roboto Condensed', sans-serif;
+                    font-size: 14px;
+                    font-weight: 400;
+                    line-height: 16px;
+                    letter-spacing: 0em;
+                    background-color: #ffffff;
+                    background-image: url('../../images/buttons/buttonGray.png');
+                }
+            }
+        }
+    }
+    .infoEvent {
+        padding: 35px 35px 35px 40px;
+        background-color: #232222;
+        background-image: url('../../images/randomCharacterBlock/decoration.png');
+        background-repeat: no-repeat;
+        background-position: 383px 47px;
+        .text {
+            font-family: 'Roboto Condensed', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 33px;
+            letter-spacing: 0em;
+            color: white;
+            margin-bottom: 13px;
+            span {
+                display: block;
+                &:first-child {
+                    margin-bottom: 33px;
+                }
+            }
+        }
+        button {
+            background-color: transparent;
+            width: 101px;
+            height: 38px;
+            background-image: url('../../images/buttons/buttonRed.png');
+            font-family: 'Roboto Condensed', sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 16px;
+            letter-spacing: 0em;
+            color: white;
+        }
+    }
+}
