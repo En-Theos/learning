@@ -36,6 +36,12 @@
                 height: 90px;
             }
             .btn {
+                button {
+                    transition: 0.2s;
+                    &:hover {
+                        transform: translateY(-10px);
+                    }
+                }
                 .homepage {
                     width: 101px;
                     height: 38px;
@@ -96,6 +102,10 @@
             line-height: 16px;
             letter-spacing: 0em;
             color: white;
+            transition: 0.2s;
+            &:hover {
+                transform: translateY(-10px);
+            }
         }
     }
 }

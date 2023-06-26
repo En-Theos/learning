@@ -1,10 +1,18 @@
 .App {
+    background-image: url('../../images/decoration/bg\ asset.png');
+    background-repeat: no-repeat;
+    background-position: right bottom;
     >.limit {
         max-width: 1100px;
         margin: 0 auto;
-        padding: 50px 0 0 0;
+        padding: 50px 0 45px 0;
         main {
             padding: 50px 0 0 0;
+            .moreCharacter {
+                display: flex;
+                justify-content: space-between;
+                padding: 53px 0 0 0;
+            }
         }
     }
 }
