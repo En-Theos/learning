@@ -9,25 +9,26 @@ import { JSX } from "react/jsx-runtime";
 // =======================================================================
 
 // Імпорти стилів=========================================================
-import "./header.scss";
+import "./messageComics.scss";
 // =======================================================================
 
 // Імпорти зображень =====================================================
+import avengers from "../../images/messageComics/avengers.png";
+import avengersLogo from "../../images/messageComics/Avengers logo.png";
 // =======================================================================
 
-export default function Header(): JSX.Element {
+export default function MessageComics(): JSX.Element {
     return (
-        <header>
-            <div className="limit">
-                <div className="name">
-                    <h1><span>Marvel</span> information portal</h1>
-                </div>
-                <nav className="pages">
-                    <p>Characters</p>
-                    <p>/</p>
-                    <p>Comics</p>
-                </nav>
+        <aside className="message">
+            <div className="avengers">
+                <img src={avengers} alt="avengers" />
             </div>
-        </header>
-    );
+            <div className="text">
+                <p>New comics every week! <br /> Stay tuned!</p>
+            </div>
+            <div className="logo">
+                <img src={avengersLogo} alt="avengers logo" />
+            </div>
+        </aside>
+    )
 }

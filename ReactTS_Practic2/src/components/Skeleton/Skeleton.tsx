@@ -1,4 +1,5 @@
 // Імпорти NPM ===========================================================
+import ContentLoader, { IContentLoaderProps } from "react-content-loader"
 import { JSX } from "react/jsx-runtime";
 // =======================================================================
 
@@ -9,25 +10,35 @@ import { JSX } from "react/jsx-runtime";
 // =======================================================================
 
 // Імпорти стилів=========================================================
-import "./header.scss";
+import "./skeleton.scss"
 // =======================================================================
 
 // Імпорти зображень =====================================================
 // =======================================================================
 
-export default function Header(): JSX.Element {
+export default function Skeleton(): JSX.Element {
     return (
-        <header>
-            <div className="limit">
-                <div className="name">
-                    <h1><span>Marvel</span> information portal</h1>
-                </div>
-                <nav className="pages">
-                    <p>Characters</p>
-                    <p>/</p>
-                    <p>Comics</p>
-                </nav>
-            </div>
-        </header>
-    );
+        <aside className="skeleton">
+            <p>Please select a character to see information</p>
+            <MyLoader/>
+        </aside>
+    )
 }
+
+const MyLoader = (props: JSX.IntrinsicAttributes & IContentLoaderProps) => (
+  <ContentLoader 
+    speed={2}
+    width={375}
+    height={190}
+    viewBox="0 0 375 190"
+    backgroundColor="#c2c2c2"
+    foregroundColor="#a6a6a6"
+    {...props}
+  >
+    <circle cx="20" cy="20" r="20" /> 
+    <rect x="0" y="55" rx="0" ry="0" width="375" height="35" /> 
+    <rect x="50" y="12" rx="0" ry="0" width="326" height="16" /> 
+    <rect x="0" y="105" rx="0" ry="0" width="375" height="35" /> 
+    <rect x="0" y="155" rx="0" ry="0" width="375" height="35" />
+  </ContentLoader>
+)

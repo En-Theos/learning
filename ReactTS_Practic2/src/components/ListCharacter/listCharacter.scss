@@ -1,15 +1,13 @@
 .listCharacter {
     .cards {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        grid-column-gap: 25px;
+        grid-template-columns: repeat(auto-fill, minmax(190px, 200px));
+        justify-content: space-between;
         grid-row-gap: 30px;
         max-width: 650px;
         margin-bottom: 55px;
 
         .card {
-            width: 200px;
-            height: 318px;
             box-shadow: 5px 5px 10px 0px #00000040;
             background-color: #232222;
             cursor: pointer;

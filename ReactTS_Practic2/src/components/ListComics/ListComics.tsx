@@ -1,4 +1,5 @@
 // Імпорти NPM ===========================================================
+import { ReactNode } from "react";
 import { JSX } from "react/jsx-runtime";
 // =======================================================================
 
@@ -6,28 +7,37 @@ import { JSX } from "react/jsx-runtime";
 // =======================================================================
 
 // Імпорти інтерфейсів ===================================================
+import IListComicsProps from "./interfaces"
 // =======================================================================
 
 // Імпорти стилів=========================================================
-import "./header.scss";
+import "./listComics.scss";
 // =======================================================================
 
 // Імпорти зображень =====================================================
 // =======================================================================
 
-export default function Header(): JSX.Element {
-    return (
-        <header>
-            <div className="limit">
-                <div className="name">
-                    <h1><span>Marvel</span> information portal</h1>
+export default function ListComics({dataListComics}: IListComicsProps): JSX.Element {
+    const card: ReactNode[] = dataListComics.map<ReactNode>(({id, img, name, price}) => {
+        return (
+            <article key={id} className="card">
+                <div className="image">
+                    <img src={img} alt={name} />
                 </div>
-                <nav className="pages">
-                    <p>Characters</p>
-                    <p>/</p>
-                    <p>Comics</p>
-                </nav>
+                <div className="text">
+                    <h3>{name}</h3>
+                    <p>{price ? price : "NOT AVAILABLE"}</p>
+                </div>
+            </article>
+        )
+    });
+
+    return (
+        <section className="listComics">
+            <div className="cards">
+                {card}
             </div>
-        </header>
+            <button>LOAD MORE</button>
+        </section>
     );
 }

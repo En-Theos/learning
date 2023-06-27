@@ -1,4 +1,5 @@
 // Імпорти NPM ===========================================================
+import { ReactNode } from "react";
 import { JSX } from "react/jsx-runtime";
 // =======================================================================
 
@@ -6,28 +7,36 @@ import { JSX } from "react/jsx-runtime";
 // =======================================================================
 
 // Імпорти інтерфейсів ===================================================
+import IListCharacterProps from "./interfaces"
 // =======================================================================
 
 // Імпорти стилів=========================================================
-import "./header.scss";
+import "./listCharacter.scss";
 // =======================================================================
 
 // Імпорти зображень =====================================================
 // =======================================================================
 
-export default function Header(): JSX.Element {
-    return (
-        <header>
-            <div className="limit">
-                <div className="name">
-                    <h1><span>Marvel</span> information portal</h1>
+export default function ListCharacter({dataListCharacter}: IListCharacterProps): JSX.Element {
+    const card: ReactNode[] = dataListCharacter.map<ReactNode>(({id, img, name}) => {
+        return (
+            <article key={id} className="card">
+                <div className="image">
+                    <img src={img} alt={name} />
                 </div>
-                <nav className="pages">
-                    <p>Characters</p>
-                    <p>/</p>
-                    <p>Comics</p>
-                </nav>
+                <div className="text">
+                    <h3>{name}</h3>
+                </div>
+            </article>
+        )
+    });
+
+    return (
+        <section className="listCharacter">
+            <div className="cards">
+                {card}
             </div>
-        </header>
+            <button>LOAD MORE</button>
+        </section>
     );
 }

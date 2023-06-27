@@ -1,6 +1,8 @@
 .moreInfo {
     max-width: 425px;
     padding: 25px;
+    box-shadow: 0px 0px 20px 0px #00000040;
+    align-self: flex-start;
     .header {
         display: flex;
         margin-bottom: 15px;
