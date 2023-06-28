@@ -1,10 +1,12 @@
 .listCharacter {
+    max-width: 650px;
+    flex-grow: 1;
     .cards {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(190px, 200px));
         justify-content: space-between;
         grid-row-gap: 30px;
-        max-width: 650px;
+        width: 100%;
         margin-bottom: 55px;
 
         .card {
@@ -12,6 +14,7 @@
             background-color: #232222;
             cursor: pointer;
             transition: 0.2s;
+            min-height: 334px;
 
             &:hover {
                 transform: translateY(-6px);
@@ -19,7 +22,10 @@
             }
 
             .image {
-                img {}
+                img {
+                    width: 100%;
+                    min-height: 200px;
+                }
             }
 
             .text {
