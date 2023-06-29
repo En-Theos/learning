@@ -1,6 +1,6 @@
 // Імпорти NPM ===========================================================
 import { JSX } from "react/jsx-runtime";
-import {useEffect, useState} from 'react';
+import { useCallback, useEffect, useState, useMemo, useRef } from 'react';
 // =======================================================================
 
 // Імпорти компонентів ===================================================
@@ -17,7 +17,7 @@ import InfoComics from "../InfoComics/InfoComics";
 import { Character, Comics } from '../../interfaces/globalIntefaces';
 // =======================================================================
 
-// Імпорти стилів=========================================================
+// Імпорти стилів ========================================================
 import './App.scss';
 // =======================================================================
 
@@ -25,45 +25,60 @@ import './App.scss';
 // =======================================================================
 
 export default function App(): JSX.Element {
+  // Використання useState, дані при зміні яких має змінюватись і сам компонент =====================
   const [dataListCharacter, setDataListCharacter] = useState<Character[] | "load" | "error">("load");
+  // ================================================================================================
 
-  useEffect(() => {
-      fetch("https://gateway.marvel.com:443/v1/public/characters?limit=9&offset=200&apikey=6953019632a49d4f4f7a4c1138ab2248")
-      .then((response) => {
-        if (!response.ok || response.status !== 200) {
-          setDataListCharacter("error");
-        }
-        return response.json();
-      }).then(data => {
-        const newdata: Character[] = data.data.results.map((obj: any) => {
-            return {id: obj.id, img: `${obj.thumbnail.path}.${obj.thumbnail.extension}`, name: obj.name}
-        });
-        setDataListCharacter(newdata);
-      }).catch(() => {
-        setDataListCharacter("error");
-      });
-  },[]);
+  // Використання useRef (дані), дані що мають наскрізне збереження =================================
+  const offset = useRef(200);
+  // ================================================================================================
+
+  // Використання useRef (елементи), посилання на елементи DOM структурі ============================
+  // ================================================================================================
+
+  // Використання useEffect, дії що потрібно виконувати: ============================================
+  // При першій загрузці компонента 
+
+  // При зміні якогось state або props
+
+  // При видалені компонента із сторінки
+
+  // ================================================================================================
+  // Використання useMemo, значення яке потрібно вираховувати: ======================================
+  // При першій загрузці компонента 
+
+  // При зміні якогось state або props
+
+  // При видалені компонента із сторінки
+
+  // ================================================================================================
+
+  // Використання useCallback, закешовані функції що передаються в інші компоненти як props =========
+  // ================================================================================================
+
+
+  
 
   const [dataListComics, setDataListComics] = useState<Comics[]>([
-    {id: 1, img: "image/UW.png", name: "ULTIMATE X-MEN VOL. 5: ULTIMATE WAR TPB", price: 9.99},
-    {id: 2, img: "image/x-men.png", name: "X-Men: Days of Future Past", price: 0},
-    {id: 3, img: "image/UW.png", name: "ULTIMATE X-MEN VOL. 5: ULTIMATE WAR TPB ", price: 9.99},
-    {id: 4, img: "image/x-men.png", name: "X-Men: Days of Future Past", price: 0},
-    {id: 5, img: "image/UW.png", name: "ULTIMATE X-MEN VOL. 5: ULTIMATE WAR TPB ", price: 9.99},
-    {id: 6, img: "image/x-men.png", name: "X-Men: Days of Future Past", price: 0},
-    {id: 7, img: "image/UW.png", name: "ULTIMATE X-MEN VOL. 5: ULTIMATE WAR TPB", price: 9.99},
-    {id: 8, img: "image/x-men.png", name: "X-Men: Days of Future Past", price: 0},
+    { id: 1, img: "image/UW.png", name: "ULTIMATE X-MEN VOL. 5: ULTIMATE WAR TPB", price: 9.99 },
+    { id: 2, img: "image/x-men.png", name: "X-Men: Days of Future Past", price: 0 },
+    { id: 3, img: "image/UW.png", name: "ULTIMATE X-MEN VOL. 5: ULTIMATE WAR TPB ", price: 9.99 },
+    { id: 4, img: "image/x-men.png", name: "X-Men: Days of Future Past", price: 0 },
+    { id: 5, img: "image/UW.png", name: "ULTIMATE X-MEN VOL. 5: ULTIMATE WAR TPB ", price: 9.99 },
+    { id: 6, img: "image/x-men.png", name: "X-Men: Days of Future Past", price: 0 },
+    { id: 7, img: "image/UW.png", name: "ULTIMATE X-MEN VOL. 5: ULTIMATE WAR TPB", price: 9.99 },
+    { id: 8, img: "image/x-men.png", name: "X-Men: Days of Future Past", price: 0 },
   ])
 
   return (
-    <div className="App" style={{backgroundImage: "none"}}>
+    <div className="App" >
       <div className="limit">
-        <Header/>
+        <Header />
         <main>
-          <RandomCharacter/>
+          <RandomCharacter />
           <div className="moreCharacter">
-            <ListCharacter dataListCharacter={dataListCharacter}/>
-            <InfoCharacter/>
+            <ListCharacter />
+            <InfoCharacter />
           </div>
         </main>
       </div>
