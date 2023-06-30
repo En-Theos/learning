@@ -10,35 +10,34 @@ import { JSX } from "react/jsx-runtime";
 // =======================================================================
 
 // Імпорти стилів=========================================================
-import "./loadInfoCharacter.scss"
+import "./loadRandomCharacter.scss"
 // =======================================================================
 
 // Імпорти зображень =====================================================
 // =======================================================================
 
-export default function LoadInfoCharacter(): JSX.Element {
+export default function LoadRandomCharacter(): JSX.Element {
     return (
-        <aside className="loadInfo">
-            <h3>Please select a character to see information</h3>
-            <MyLoader/>
-        </aside>
+        <MyLoader/>
     )
 }
 
 const MyLoader = (props: JSX.IntrinsicAttributes & IContentLoaderProps) => (
   <ContentLoader 
     speed={2}
-    width={375}
-    height={190}
-    viewBox="0 0 375 190"
+    width={475}
+    height={183}
+    viewBox="0 0 475 183"
     backgroundColor="#c2c2c2"
-    foregroundColor="#a6a6a6"
+    foregroundColor="#ababab"
     {...props}
   >
-    <circle cx="20" cy="20" r="20" /> 
-    <rect x="0" y="55" rx="0" ry="0" width="375" height="35" /> 
-    <rect x="50" y="12" rx="0" ry="0" width="326" height="16" /> 
-    <rect x="0" y="105" rx="0" ry="0" width="375" height="35" /> 
-    <rect x="0" y="155" rx="0" ry="0" width="375" height="35" />
+    <rect x="0" y="0" rx="0" ry="0" width="183" height="183" /> 
+    <rect x="0" y="210" rx="0" ry="0" width="200" height="25" /> 
+    <rect x="0" y="245" rx="0" ry="0" width="200" height="25" /> 
+    <rect x="0" y="280" rx="0" ry="0" width="200" height="25" /> 
+    <rect x="213" y="0" rx="0" ry="0" width="262" height="26" /> 
+    <rect x="213" y="149" rx="0" ry="0" width="262" height="32" /> 
+    <rect x="213" y="45" rx="0" ry="0" width="262" height="80" />
   </ContentLoader>
 )

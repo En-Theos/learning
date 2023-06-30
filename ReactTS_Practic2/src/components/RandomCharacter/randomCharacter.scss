@@ -11,7 +11,7 @@
         .img {
             padding-right: 30px;
             img {
-                width: 180px;
+                width: 183px;
             }
         }
         .info {
@@ -38,6 +38,14 @@
             .btn {
                 button {
                     transition: 0.2s;
+                    a {
+                        color: white;
+                        font-family: 'Roboto Condensed', sans-serif;
+                        font-size: 14px;
+                        font-weight: 400;
+                        line-height: 16px;
+                        letter-spacing: 0em;
+                    }
                     &:hover {
                         transform: translateY(-10px);
                     }
@@ -45,12 +53,6 @@
                 .homepage {
                     width: 101px;
                     height: 38px;
-                    color: white;
-                    font-family: 'Roboto Condensed', sans-serif;
-                    font-size: 14px;
-                    font-weight: 400;
-                    line-height: 16px;
-                    letter-spacing: 0em;
                     background-color: #ffffff;
                     background-image: url('../../images/buttons/buttonRed.png');
                     margin-right: 30px;
@@ -58,12 +60,6 @@
                 .wiki {
                     width: 101px;
                     height: 38px;
-                    color: white;
-                    font-family: 'Roboto Condensed', sans-serif;
-                    font-size: 14px;
-                    font-weight: 400;
-                    line-height: 16px;
-                    letter-spacing: 0em;
                     background-color: #ffffff;
                     background-image: url('../../images/buttons/buttonGray.png');
                 }

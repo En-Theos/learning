@@ -1,6 +1,6 @@
 // Імпорти NPM ===========================================================
 import { JSX } from "react/jsx-runtime";
-import { useCallback, useEffect, useState, useMemo, useRef } from 'react';
+import { useState } from 'react';
 // =======================================================================
 
 // Імпорти компонентів ===================================================
@@ -14,7 +14,7 @@ import InfoComics from "../InfoComics/InfoComics";
 // =======================================================================
 
 // Імпорти інтерфейсів ===================================================
-import { Character, Comics } from '../../interfaces/globalIntefaces';
+import { Comics } from '../../interfaces/globalIntefaces';
 // =======================================================================
 
 // Імпорти стилів ========================================================
@@ -26,11 +26,10 @@ import './App.scss';
 
 export default function App(): JSX.Element {
   // Використання useState, дані при зміні яких має змінюватись і сам компонент =====================
-  const [dataListCharacter, setDataListCharacter] = useState<Character[] | "load" | "error">("load");
+  const [idCharacter, setIdCharacter] = useState<number>(-1);
   // ================================================================================================
 
   // Використання useRef (дані), дані що мають наскрізне збереження =================================
-  const offset = useRef(200);
   // ================================================================================================
 
   // Використання useRef (елементи), посилання на елементи DOM структурі ============================
@@ -57,8 +56,6 @@ export default function App(): JSX.Element {
   // ================================================================================================
 
 
-  
-
   const [dataListComics, setDataListComics] = useState<Comics[]>([
     { id: 1, img: "image/UW.png", name: "ULTIMATE X-MEN VOL. 5: ULTIMATE WAR TPB", price: 9.99 },
     { id: 2, img: "image/x-men.png", name: "X-Men: Days of Future Past", price: 0 },
@@ -77,8 +74,8 @@ export default function App(): JSX.Element {
         <main>
           <RandomCharacter />
           <div className="moreCharacter">
-            <ListCharacter />
-            <InfoCharacter />
+            <ListCharacter setIdCharacter={setIdCharacter}/>
+            <InfoCharacter idCharacter={idCharacter}/>
           </div>
         </main>
       </div>

@@ -10,6 +10,7 @@ import ErrorListCharacter from "../ErrorBlocks/ErrorListCharacter/ErrorListChara
 
 // Імпорти інтерфейсів ===================================================
 import { Character } from "../../interfaces/globalIntefaces";
+import IListCharacter from "./interfaces";
 // =======================================================================
 
 // Імпорти стилів=========================================================
@@ -20,9 +21,9 @@ import "./listCharacter.scss";
 import loadBtn from "../../images/buttons/loading.gif";
 // =======================================================================
 
-export default function ListCharacter(): JSX.Element {
+export default function ListCharacter({setIdCharacter}: IListCharacter): JSX.Element {
     // Використання useState, дані при зміні яких має змінюватись і сам компонент =====================
-    const [dataListCharacter, setDataListCharacter] = useState<Character[] | "load" | "error">("load");
+    const [componentData, setComponentData] = useState<Character[] | "load" | "error">("load");
     // ================================================================================================
 
     // Використання useRef (дані), дані що мають наскрізне збереження =================================
@@ -30,6 +31,7 @@ export default function ListCharacter(): JSX.Element {
     // ================================================================================================
 
     // Використання useRef (елементи), посилання на елементи DOM структурі ============================
+    const btn = useRef<HTMLButtonElement>(null);
     // ================================================================================================
 
     // Використання useEffect, дії що потрібно виконувати: ============================================
@@ -38,7 +40,7 @@ export default function ListCharacter(): JSX.Element {
         fetch("https://gateway.marvel.com:443/v1/public/characters?limit=9&offset=200&apikey=6953019632a49d4f4f7a4c1138ab2248")
             .then((response) => {
                 if (!response.ok || response.status !== 200) {
-                    setDataListCharacter("error");
+                    setComponentData("error");
                 } else {
                     return response.json();
                 }
@@ -46,9 +48,9 @@ export default function ListCharacter(): JSX.Element {
                 const newdata: Character[] = data.data.results.map((obj: any) => {
                     return { id: obj.id, img: `${obj.thumbnail.path}.${obj.thumbnail.extension}`, name: obj.name }
                 });
-                setDataListCharacter(newdata);
+                setComponentData(newdata);
             }).catch(() => {
-                setDataListCharacter("error");
+                setComponentData("error");
             });
     }, []);
     // При зміні якогось state або props
@@ -67,60 +69,73 @@ export default function ListCharacter(): JSX.Element {
 
     // Використання useCallback, закешовані функції що передаються в інші компоненти як props =========
     // ================================================================================================
-    function addDataCharacter(event: any) {
-        let statusButton = 'load';
-        event.currentTarget.disabled = true;
-        event.currentTarget.classList.add("btnLoad");
-
-        if (typeof dataListCharacter === "object") {
-            offset.current += 9;
-            // eslint-disable-next-line no-sequences
-
-            fetch(`https://gateway.marvel.com:443/v1/public/characters?limit=9&offset=${offset.current}&apikey=6953019632a49d4f4f7a4c1138ab2248`)
-                .then((response) => {
-                    if (!response.ok || response.status !== 200) {
-                        statusButton = "error";
-                    } else {
-                        return response.json();
-                    }
-                }).then((data) => {
-                    const newdata: Character[] = data.data.results.map((obj: any) => {
-                        return { id: obj.id, img: `${obj.thumbnail.path}.${obj.thumbnail.extension}`, name: obj.name }
+    function onAddDataCharacter() {
+        if (btn.current) {
+            
+            if (typeof componentData === "object") {
+                offset.current += 9;
+                btn.current.disabled = true;
+                btn.current.classList.add("btnLoad");
+                btn.current.classList.remove("btnError");
+                
+                
+                fetch(`https://gateway.marvel.com:443/v1/public/characters?limit=9&offset=${offset.current}&apikey=6953019632a49d4f4f7a4c1138ab2248`)
+                    .then((response) => {
+                        if (!response.ok || response.status !== 200) {
+                            if (btn.current) {
+                                btn.current.disabled = false;
+                                btn.current.classList.remove("btnLoad");
+                                btn.current.classList.add("btnError");
+                            }
+                        } else {
+                            return response.json();
+                        }
+                    }).then((data) => {
+                        const newdata: Character[] = data.data.results.map((obj: any) => {
+                            return { id: obj.id, img: `${obj.thumbnail.path}.${obj.thumbnail.extension}`, name: obj.name }
+                        });
+    
+                        if (btn.current) {
+                            btn.current.disabled = false;
+                            btn.current.classList.remove("btnLoad", "btnError");
+                        }
+                        
+                        setComponentData([...data, ...newdata]);
+                    }).catch(() => {
+                        if (btn.current) {
+                            btn.current.disabled = false;
+                            btn.current.classList.remove("btnLoad");
+                            btn.current.classList.add("btnError");
+                        }
                     });
-
-                    
-                    setDataListCharacter([...dataListCharacter, ...newdata]);
-                }).catch(() => {
-                    statusButton = "error";
-                });
-        } else if (dataListCharacter === "load") {
-            event.target.disabled = true;
-            event.target.textContent = "LOADING";
-            event.target.classList.add("btnLoad");
-        } else {
-            statusButton = "error";
+            } else if (componentData === "load") {
+                btn.current.disabled = true;
+            } else {
+                btn.current.disabled = true;
+                btn.current.classList.add("btnError");
+            }
         }
     }
 
     let card: ReactNode[] = [];
 
-    switch (dataListCharacter) {
+    switch (componentData) {
         case "load":
         case "error":
             for (let i = 0; i < 9; i++) {
                 card.push((
                     <article key={i} className="card">
                         {
-                            dataListCharacter === "load" ? <LoadListCharacter /> : <ErrorListCharacter />
+                            componentData === "load" ? <LoadListCharacter /> : <ErrorListCharacter />
                         }
                     </article>
                 ));
             }
             break;
         default:
-            card = dataListCharacter.map<ReactNode>(({ id, img, name }) => {
+            card = componentData.map<ReactNode>(({ id, img, name }) => {
                 return (
-                    <article key={id} className="card">
+                    <article key={id} className="card" onClick={() => setIdCharacter(id)}>
                         <div className="image">
                             <img src={img} alt={name} />
                         </div>
@@ -138,7 +153,7 @@ export default function ListCharacter(): JSX.Element {
             <div className="cards">
                 {card}
             </div>
-            <button onClick={addDataCharacter}>
+            <button ref={btn} onClick={onAddDataCharacter}>
                 <span className="default">LOAD MORE</span>
                 <span className="load">LOADING </span>
                 <span className="error">ERROR </span>

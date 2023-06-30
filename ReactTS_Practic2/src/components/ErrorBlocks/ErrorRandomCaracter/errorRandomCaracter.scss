@@ -1,8 +1,8 @@
-.loadInfo {
+.errorRandom {
+    display: flex;
+    align-items: center;
     max-width: 425px;
-    padding: 25px;
-    box-shadow: 0px 0px 20px 0px #00000040;
-    align-self: flex-start;
+    height: 180px;
     h3 {
         font-family: "Roboto Condensed", sans-serif;
         font-size: 18px;
@@ -10,6 +10,9 @@
         line-height: 21px;
         letter-spacing: 0em;
         color: #000000;
-        margin-bottom: 30px;
+    }
+    img {
+        margin: 0 auto;
+        height: 100%;
     }
 }

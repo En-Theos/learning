@@ -1,11 +1,16 @@
 // Імпорти NPM ===========================================================
+import { useEffect, useState } from "react";
 import { JSX } from "react/jsx-runtime";
 // =======================================================================
 
 // Імпорти компонентів ===================================================
+import LoadInfoCharacter from "../LoadBlocks/LoadInfoCharacter/LoadInfoCharacter";
+import ErrorInfoCharacter from "../ErrorBlocks/ErrorInfoCharacter/ErrorInfoCharacter";
 // =======================================================================
 
 // Імпорти інтерфейсів ===================================================
+import IInfoCharacterProps from "./interfaces";
+import { ExpandedCharacter } from "../../interfaces/globalIntefaces";
 // =======================================================================
 
 // Імпорти стилів=========================================================
@@ -15,36 +20,92 @@ import "./infoCharacter.scss";
 // Імпорти зображень =====================================================
 // =======================================================================
 
-export default function InfoCharacter(): JSX.Element {
-    return (
-        <aside className="moreInfo">
-            <div className="header">
-                <div className="image">
-                    <img src="image/loki.png" alt="" />
-                </div>
-                <div className="info">
-                    <h3 className="name">LOKI</h3>
-                    <div className="buttons">
-                        <button className="homepage">HOMEPAGE</button>
-                        <button className="wiki">WIKI</button>
+export default function InfoCharacter({idCharacter}: IInfoCharacterProps): JSX.Element {
+    // Використання useState, дані при зміні яких має змінюватись і сам компонент =====================
+    const [componentData, setComponentData] = useState<ExpandedCharacter | "load" | "error">("load");
+    // ================================================================================================
+
+    // Використання useRef (дані), дані що мають наскрізне збереження =================================
+    // ================================================================================================
+
+    // Використання useRef (елементи), посилання на елементи DOM структурі ============================
+    // ================================================================================================
+
+    // Використання useEffect, дії що потрібно виконувати: ============================================
+    // При першій загрузці компонента 
+
+    // При зміні якогось state або props
+    useEffect(() => {
+        if (idCharacter !== -1) {
+            fetch(`https://gateway.marvel.com:443/v1/public/characters/${idCharacter}?apikey=6953019632a49d4f4f7a4c1138ab2248`)
+            .then((response) => {
+                if (!response.ok && response.status !== 200) {
+                    setComponentData("error");
+                } else {
+                    return response.json();
+                }
+            }).then((data) => {
+                setComponentData({
+                    id: data.data.results[0].id,
+                    img: data.data.results[0].thumbnail.path + '.' + data.data.results[0].thumbnail.extension,
+                    name: data.data.results[0].name,
+                    description: data.data.results[0].description,
+                    comics: data.data.results[0].comics.items.map((obj: any) => obj.name),
+                    homepage: data.data.results[0].urls[0].url,
+                    wiki: data.data.results[0].urls[1].url
+                });
+            }).catch(() => {
+                setComponentData("error");
+            });
+        }
+    }, [idCharacter]);
+    // При видалені компонента із сторінки
+
+    // ================================================================================================
+    // Використання useMemo, значення яке потрібно вираховувати: ======================================
+    // При першій загрузці компонента 
+
+    // При зміні якогось state або props
+
+    // При видалені компонента із сторінки
+
+    // ================================================================================================
+
+    // Використання useCallback, закешовані функції що передаються в інші компоненти як props =========
+    // ================================================================================================
+
+    switch (componentData) {
+        case "load":
+            return <LoadInfoCharacter/>
+        case "error":
+            return <ErrorInfoCharacter/>
+        default:
+            return (
+                <aside className="moreInfo">
+                    <div className="header">
+                        <div className="image">
+                            <img src={componentData.img} alt={componentData.name} />
+                        </div>
+                        <div className="info">
+                            <h3 className="name">{componentData.name}</h3>
+                            <div className="buttons">
+                                <button className="homepage"><a href={componentData.homepage}>HOMEPAGE</a></button>
+                                <button className="wiki"><a href={componentData.wiki}>WIKI</a></button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div className="description">
-                <p>In Norse mythology, Loki is a god or jötunn (or both). Loki is the son of Fárbauti and Laufey, and the brother of Helblindi and Býleistr. By the jötunn Angrboða, Loki is the father of Hel, the wolf Fenrir, and the world serpent Jörmungandr. By Sigyn, Loki is the father of Nari and/or Narfi and with the stallion Svaðilfari as the father, Loki gave birth—in the form of a mare—to the eight-legged horse Sleipnir. In addition, Loki is referred to as the father of Váli in the Prose Edda.</p>
-            </div>
-            <div className="comics">
-                <h4>Comics:</h4>
-                <ul>
-                    <li>All-Winners Squad: Band of Heroes (2011) #3</li>
-                    <li>All-Winners Squad: Band of Heroes (2011) #3</li>
-                    <li>All-Winners Squad: Band of Heroes (2011) #3</li>
-                    <li>All-Winners Squad: Band of Heroes (2011) #3</li>
-                    <li>All-Winners Squad: Band of Heroes (2011) #3</li>
-                    <li>All-Winners Squad: Band of Heroes (2011) #3</li>
-                    <li>All-Winners Squad: Band of Heroes (2011) #3</li>
-                </ul>
-            </div>
-        </aside>
-    )
+                    <div className="description">
+                        <p>{componentData.description}</p>
+                    </div>
+                    <div className="comics">
+                        <h4>Comics:</h4>
+                        <ul>
+                            {componentData.comics.map((name: string, i) => {
+                                return <li key={i}>{name}</li>
+                            })}
+                        </ul>
+                    </div>
+                </aside>
+            )
+    }
 }

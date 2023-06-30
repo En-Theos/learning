@@ -105,8 +105,24 @@
     }
 
     .btnError {
-        
+        span {
+            &.default {
+                display: none;
+            }
+            &.load {
+                display: none;
+            }
+            &.error {
+                display: inline;
+            }
+        }
+        img {
+            display: none;
+        }
         &::after {
+            content: "❗❗❗";
+        }
+        &::before {
             content: "❗❗❗";
         }
     }
