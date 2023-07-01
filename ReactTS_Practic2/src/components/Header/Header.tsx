@@ -1,5 +1,6 @@
 // Імпорти NPM ===========================================================
 import { JSX } from "react/jsx-runtime";
+import { NavLink } from "react-router-dom";
 // =======================================================================
 
 // Імпорти компонентів ===================================================
@@ -23,9 +24,23 @@ export default function Header(): JSX.Element {
                     <h1><span>Marvel</span> information portal</h1>
                 </div>
                 <nav className="pages">
-                    <p>Characters</p>
+                    <p>
+                        <NavLink    
+                            end 
+                            to={"/"} 
+                            style={({isActive, isPending}) => ({color: isActive ? '#9F0013' :  'black'})}>
+                            Characters
+                        </NavLink> 
+                    </p>
                     <p>/</p>
-                    <p>Comics</p>
+                    <p>
+                        <NavLink 
+                            end 
+                            to={"/comics"} 
+                            style={({isActive, isPending}) => ({color: isActive ? '#9F0013' :  'black'})}>
+                            Comics
+                        </NavLink>
+                    </p>
                 </nav>
             </div>
         </header>

@@ -74,7 +74,7 @@ export default function RandomCharacter(): JSX.Element {
                     id: obj.id,
                     img: obj.thumbnail.path + '.' + obj.thumbnail.extension,
                     name: obj.name,
-                    description: obj.description.length > 200 ? obj.description.slice(0, 200) + '...' : obj.description,
+                    description: obj.description.length > 200 ? obj.description.slice(0, 200) + '...' : obj.description ? obj.description : "This character has no description",
                     homepage: obj.urls[0].url,
                     wiki: obj.urls[1].url
                 });

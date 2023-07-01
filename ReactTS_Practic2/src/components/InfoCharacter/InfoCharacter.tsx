@@ -45,14 +45,16 @@ export default function InfoCharacter({idCharacter}: IInfoCharacterProps): JSX.E
                     return response.json();
                 }
             }).then((data) => {
+                const obj = data.data.results[0];
+
                 setComponentData({
-                    id: data.data.results[0].id,
-                    img: data.data.results[0].thumbnail.path + '.' + data.data.results[0].thumbnail.extension,
-                    name: data.data.results[0].name,
-                    description: data.data.results[0].description,
-                    comics: data.data.results[0].comics.items.map((obj: any) => obj.name),
-                    homepage: data.data.results[0].urls[0].url,
-                    wiki: data.data.results[0].urls[1].url
+                    id: obj.id,
+                    img: obj.thumbnail.path + '.' + obj.thumbnail.extension,
+                    name: obj.name,
+                    description: obj.description ? obj.description : "This character has no description",
+                    comics: obj.comics.items.map((obj: any) => obj.name),
+                    homepage: obj.urls[0].url,
+                    wiki: obj.urls[1].url
                 });
             }).catch(() => {
                 setComponentData("error");

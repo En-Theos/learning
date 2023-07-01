@@ -1,41 +1,35 @@
 // Імпорти NPM ===========================================================
 import { JSX } from "react/jsx-runtime";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useState } from 'react';
 // =======================================================================
 
 // Імпорти компонентів ===================================================
-import Header from '../Header/Header';
-import { CharacterPage, ComicsPage } from "../pages"
 import RandomCharacter from '../RandomCharacter/RandomCharacter';
 import ListCharacter from '../ListCharacter/ListCharacter';
 import InfoCharacter from '../InfoCharacter/InfoCharacter';
-import MessageComics from "../MessageComics/MessageComics";
-import ListComics from "../ListComics/ListComics";
-import InfoComics from "../InfoComics/InfoComics";
 // =======================================================================
 
 // Імпорти інтерфейсів ===================================================
 // =======================================================================
 
 // Імпорти стилів ========================================================
-import './App.scss';
 // =======================================================================
 
 // Імпорти зображень =====================================================
+import bgImage from "../../images/decoration/bgMain.png";
 // =======================================================================
 
-export default function App(): JSX.Element {
-  return (
-    <Router>
-      <div className="App" >
-        <div className="limit">
-          <Header />
-          <Routes>
-            <Route path="/" element={<CharacterPage/>}/>
-            <Route path="comics" element={<ComicsPage/>}/>
-          </Routes>
-        </div>
-      </div>
-    </Router>
-  );
+export default function CharacterPage():JSX.Element {
+    const [idCharacter, setIdCharacter] = useState<number>(-1);
+
+    return (
+        <main>
+          <RandomCharacter />
+          <div className="moreCharacter">
+            <ListCharacter setIdCharacter={setIdCharacter}/>
+            <InfoCharacter idCharacter={idCharacter}/>
+          </div>
+          <div className="bgImage"><img src={bgImage} alt="bg" /></div>
+        </main>
+    )
 }
