@@ -21,6 +21,10 @@ import "./listCharacter.scss";
 import loadBtn from "../../images/buttons/loading.gif";
 // =======================================================================
 
+// Імпорти функцій =======================================================
+import { onAddDataCharacter } from "../services/request";
+// =======================================================================
+
 export default function ListCharacter({setIdCharacter}: IListCharacter): JSX.Element {
     // Використання useState, дані при зміні яких має змінюватись і сам компонент =====================
     const [componentData, setComponentData] = useState<Character[] | "load" | "error">("load");
@@ -37,7 +41,7 @@ export default function ListCharacter({setIdCharacter}: IListCharacter): JSX.Ele
     // Використання useEffect, дії що потрібно виконувати: ============================================
     // При першій загрузці компонента 
     useEffect(() => {
-        fetch("https://gateway.marvel.com:443/v1/public/characters?limit=9&offset=200&apikey=6953019632a49d4f4f7a4c1138ab2248")
+        fetch(`https://gateway.marvel.com:443/v1/public/characters?limit=9&offset=${offset.current}&apikey=6953019632a49d4f4f7a4c1138ab2248`)
             .then((response) => {
                 if (!response.ok || response.status !== 200) {
                     setComponentData("error");
@@ -69,54 +73,6 @@ export default function ListCharacter({setIdCharacter}: IListCharacter): JSX.Ele
 
     // Використання useCallback, закешовані функції що передаються в інші компоненти як props =========
     // ================================================================================================
-    function onAddDataCharacter() {
-        if (btn.current) {
-            
-            if (typeof componentData === "object") {
-                offset.current += 9;
-                btn.current.disabled = true;
-                btn.current.classList.add("btnLoad");
-                btn.current.classList.remove("btnError");
-                
-                
-                fetch(`https://gateway.marvel.com:443/v1/public/characters?limit=9&offset=${offset.current}&apikey=6953019632a49d4f4f7a4c1138ab2248`)
-                    .then((response) => {
-                        if (!response.ok || response.status !== 200) {
-                            if (btn.current) {
-                                btn.current.disabled = false;
-                                btn.current.classList.remove("btnLoad");
-                                btn.current.classList.add("btnError");
-                            }
-                        } else {
-                            return response.json();
-                        }
-                    }).then((data) => {
-                        const newdata: Character[] = data.data.results.map((obj: any) => {
-                            return { id: obj.id, img: `${obj.thumbnail.path}.${obj.thumbnail.extension}`, name: obj.name }
-                        });
-    
-                        if (btn.current) {
-                            btn.current.disabled = false;
-                            btn.current.classList.remove("btnLoad", "btnError");
-                        }
-                        
-                        setComponentData([...data, ...newdata]);
-                    }).catch(() => {
-                        if (btn.current) {
-                            btn.current.disabled = false;
-                            btn.current.classList.remove("btnLoad");
-                            btn.current.classList.add("btnError");
-                        }
-                    });
-            } else if (componentData === "load") {
-                btn.current.disabled = true;
-            } else {
-                btn.current.disabled = true;
-                btn.current.classList.add("btnError");
-            }
-        }
-    }
-
     let card: ReactNode[] = [];
 
     switch (componentData) {
@@ -153,7 +109,16 @@ export default function ListCharacter({setIdCharacter}: IListCharacter): JSX.Ele
             <div className="cards">
                 {card}
             </div>
-            <button ref={btn} onClick={onAddDataCharacter}>
+            <button ref={btn} onClick={() => {
+                if (typeof componentData === "object" && btn.current) {
+                    onAddDataCharacter({
+                        btn: btn.current, 
+                        offset: offset, 
+                        charactersData: componentData, 
+                        setCharactersData: setComponentData
+                    })
+                }
+            }}>
                 <span className="default">LOAD MORE</span>
                 <span className="load">LOADING </span>
                 <span className="error">ERROR </span>

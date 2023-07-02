@@ -9,16 +9,16 @@ import { JSX } from "react/jsx-runtime";
 // =======================================================================
 
 // Імпорти стилів=========================================================
-import "./errorListCharacter.scss";
+import "./errorListComics.scss";
 // =======================================================================
 
 // Імпорти зображень =====================================================
 import errorGif from "../image/error.gif";
 // =======================================================================
 
-export default function ErrorListCharacter(): JSX.Element {
+export default function ErrorListComics(): JSX.Element {
     return (
-        <div className="errorCharacter">
+        <div className="errorComics">
             <img className="errorImg" src={errorGif} alt="error gif" />
         </div>
     )

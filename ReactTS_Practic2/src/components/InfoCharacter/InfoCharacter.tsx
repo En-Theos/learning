@@ -36,6 +36,8 @@ export default function InfoCharacter({idCharacter}: IInfoCharacterProps): JSX.E
 
     // При зміні якогось state або props
     useEffect(() => {
+        setComponentData("load");
+
         if (idCharacter !== -1) {
             fetch(`https://gateway.marvel.com:443/v1/public/characters/${idCharacter}?apikey=6953019632a49d4f4f7a4c1138ab2248`)
             .then((response) => {

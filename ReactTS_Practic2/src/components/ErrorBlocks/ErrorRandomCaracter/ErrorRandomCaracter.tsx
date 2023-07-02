@@ -13,7 +13,7 @@ import "./errorRandomCaracter.scss";
 // =======================================================================
 
 // Імпорти зображень =====================================================
-import errorGif from "./image/error.gif";
+import errorGif from "../image/error.gif";
 // =======================================================================
 
 export default function ErrorRandomCharacter(): JSX.Element {

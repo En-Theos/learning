@@ -28,7 +28,7 @@ export default function Header(): JSX.Element {
                         <NavLink    
                             end 
                             to={"/"} 
-                            style={({isActive, isPending}) => ({color: isActive ? '#9F0013' :  'black'})}>
+                            style={({isActive}) => ({color: isActive ? '#9F0013' :  'black'})}>
                             Characters
                         </NavLink> 
                     </p>
@@ -37,7 +37,7 @@ export default function Header(): JSX.Element {
                         <NavLink 
                             end 
                             to={"/comics"} 
-                            style={({isActive, isPending}) => ({color: isActive ? '#9F0013' :  'black'})}>
+                            style={({isActive}) => ({color: isActive ? '#9F0013' :  'black'})}>
                             Comics
                         </NavLink>
                     </p>

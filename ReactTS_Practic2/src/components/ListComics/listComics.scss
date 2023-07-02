@@ -1,5 +1,6 @@
 .listComics {
     width: 100%;
+    min-height: 1015px;
     padding: 45px 0 0;
 
     .cards {
@@ -49,7 +50,9 @@
     }
 
     button {
-        display: block;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         width: 170px;
         height: 38px;
         background-color: inherit;
@@ -64,9 +67,67 @@
         color: white;
         margin: 0 auto;
         transition: 0.2s;
-
         &:hover {
             transform: translateY(-10px);
+        }
+
+        span {
+            &.default {
+                display: inline;
+            }
+            &.load {
+                display: none;
+            }
+            &.error {
+                display: none;
+            }
+        }
+
+        img {
+            display: none;
+        }
+    }
+
+    .btnLoad {
+        span {
+            &.default {
+                display: none;
+            }
+            &.load {
+                display: inline;
+            }
+            &.error {
+                display: none;
+            }
+        }
+
+        img {
+            display: block;
+            width: 30px;
+            margin-left: 10px;
+        }
+    }
+
+    .btnError {
+        span {
+            &.default {
+                display: none;
+            }
+            &.load {
+                display: none;
+            }
+            &.error {
+                display: inline;
+            }
+        }
+        img {
+            display: none;
+        }
+        &::after {
+            content: "❗❗❗";
+        }
+        &::before {
+            content: "❗❗❗";
         }
     }
 }

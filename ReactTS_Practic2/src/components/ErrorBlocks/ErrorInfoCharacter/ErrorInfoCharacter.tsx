@@ -13,7 +13,7 @@ import "./errorInfoCharacter.scss";
 // =======================================================================
 
 // Імпорти зображень =====================================================
-import errorGif from "./image/error.gif";
+import errorGif from "../image/error.gif";
 // =======================================================================
 
 export default function ErrorInfoCharacter(): JSX.Element {
