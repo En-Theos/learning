@@ -1,37 +1,26 @@
 // Імпорти NPM ===========================================================
 import { JSX } from "react/jsx-runtime";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Link } from "react-router-dom";
 // =======================================================================
 
 // Імпорти компонентів ===================================================
-import Header from '../Header/Header';
-import { CharacterPage, ComicsPage, ComicPage, Page404 } from "../pages"
 // =======================================================================
 
 // Імпорти інтерфейсів ===================================================
 // =======================================================================
 
 // Імпорти стилів ========================================================
-import './App.scss';
 // =======================================================================
 
 // Імпорти зображень =====================================================
 // =======================================================================
 
-export default function App(): JSX.Element {
+export default function Page404():JSX.Element {
   return (
-    <Router>
-      <div className="App" >
-        <div className="limit">
-          <Header />
-          <Routes>
-            <Route path="/" element={<CharacterPage/>}/>
-            <Route path="comics" element={<ComicsPage/>}/>
-            <Route path="comics/:idComic" element={<ComicPage/>}/>
-            <Route path="*" element={<Page404/>}/>
-          </Routes>
-        </div>
-      </div>
-    </Router>
-  );
+    <div style={{display: "flex", flexDirection: "column", alignItems:"center", marginTop:"200px"}}>
+        <h2 style={{fontFamily: '"Roboto Condensed", sans-serif', fontSize: "30px"}}>404 PAGE NOT FOUND</h2>
+        <p style={{fontFamily: '"Roboto Condensed", sans-serif', fontSize: "20px"}}>Check that you typed the address correctly, go back to your previous page or try using our site search to find something specific.</p>
+        <Link style={{fontFamily: '"Roboto Condensed", sans-serif', fontSize: "20px", color: "black", marginTop:"20px", fontWeight:"bold"}} to="/">Go main</Link>
+    </div>
+  )
 }

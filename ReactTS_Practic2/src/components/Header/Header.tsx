@@ -35,7 +35,7 @@ export default function Header(): JSX.Element {
                     <p>/</p>
                     <p>
                         <NavLink 
-                            end 
+                             
                             to={"/comics"} 
                             style={({isActive}) => ({color: isActive ? '#9F0013' :  'black'})}>
                             Comics

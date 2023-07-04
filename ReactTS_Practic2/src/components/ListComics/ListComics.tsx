@@ -1,6 +1,7 @@
 // Імпорти NPM ===========================================================
 import { ReactNode, useEffect, useState, useRef } from "react";
 import { JSX } from "react/jsx-runtime";
+import { Link } from "react-router-dom";
 // =======================================================================
 
 // Імпорти компонентів ===================================================
@@ -9,7 +10,7 @@ import ErrorListComics from "../ErrorBlocks/ErrorListComics/ErrorListComics";
 // =======================================================================
 
 // Імпорти інтерфейсів ===================================================
-import { Comics } from "../../interfaces/globalIntefaces";
+import { Comic } from "../../interfaces/globalIntefaces";
 // =======================================================================
 
 // Імпорти стилів=========================================================
@@ -21,12 +22,12 @@ import loadBtn from "../../images/buttons/loading.gif";
 // =======================================================================
 
 // Імпорти функцій =======================================================
-import { onAddDataCharacter } from "../services/request";
+import { onAddDataCharacter } from "../../services/request";
 // =======================================================================
 
 export default function ListComics(): JSX.Element {
     // Використання useState, дані при зміні яких має змінюватись і сам компонент =====================
-    const [componentData, setComponentData] = useState<Comics[] | "load" | "error">("load");
+    const [componentData, setComponentData] = useState<Comic[] | "load" | "error">("load");
     // ================================================================================================
 
     // Використання useRef (дані), дані що мають наскрізне збереження =================================
@@ -52,7 +53,7 @@ export default function ListComics(): JSX.Element {
                 id: obj.id,
                 img: obj.thumbnail.path + '.' + obj.thumbnail.extension,
                 title: obj.title,
-                price: obj.prices[0].price
+                price: obj.prices[0].price ? obj.prices[0].price + "$": obj.prices[0].price
             })))
         }).catch(() => {
             setComponentData("error");
@@ -93,13 +94,15 @@ export default function ListComics(): JSX.Element {
             card = componentData.map<ReactNode>(({id, img, title, price}) => {
                 return (
                     <article key={id} className="card">
-                        <div className="image">
-                            <img src={img} alt={title} />
-                        </div>
-                        <div className="text">
-                            <h3>{title}</h3>
-                            <p>{price ? price : "NOT AVAILABLE"}</p>
-                        </div>
+                        <Link to={`${id}`}>
+                            <div className="image">
+                                <img src={img} alt={title} />
+                            </div>
+                            <div className="text">
+                                <h3>{title}</h3>
+                                <p>{price ? price : "NOT AVAILABLE"}</p>
+                            </div>
+                        </Link>
                     </article>
                 )
             });

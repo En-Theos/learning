@@ -1,4 +1,4 @@
-import { Character, Comics } from "../../interfaces/globalIntefaces";
+import { Character, Comic } from "../interfaces/globalIntefaces";
 
 export function onAddDataCharacter({
     btn, offset, charactersData, comicsData, setCharactersData, setComicsData
@@ -6,9 +6,9 @@ export function onAddDataCharacter({
     btn: HTMLButtonElement,
     offset: React.MutableRefObject<number>,
     charactersData?: Character[],
-    comicsData?: Comics[],
+    comicsData?: Comic[],
     setCharactersData?: React.Dispatch<React.SetStateAction<Character[] | "load" | "error">>,
-    setComicsData?: React.Dispatch<React.SetStateAction<Comics[] | "load" | "error">>
+    setComicsData?: React.Dispatch<React.SetStateAction<Comic[] | "load" | "error">>
 }) {
     const limit = charactersData ? 9 : 8;
     const url = charactersData ? "characters" : "comics";
@@ -29,7 +29,7 @@ export function onAddDataCharacter({
             }
         }).then((data) => {
             let newDataCharacters: Character[]  = [];
-            let newDataComics: Comics[] = [];
+            let newDataComics: Comic[] = [];
 
             btn.disabled = false;
             btn.classList.remove("btnLoad", "btnError");
@@ -47,7 +47,7 @@ export function onAddDataCharacter({
                     id: obj.id,
                     img: obj.thumbnail.path + '.' + obj.thumbnail.extension,
                     title: obj.title,
-                    price: obj.prices[0].price
+                    price: obj.prices[0].price ? obj.prices[0].price + "$": obj.prices[0].price
                 }))
 
                 setComicsData([...comicsData, ...newDataComics]); 

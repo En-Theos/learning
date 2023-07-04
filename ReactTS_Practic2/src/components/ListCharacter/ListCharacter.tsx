@@ -22,7 +22,7 @@ import loadBtn from "../../images/buttons/loading.gif";
 // =======================================================================
 
 // Імпорти функцій =======================================================
-import { onAddDataCharacter } from "../services/request";
+import { onAddDataCharacter } from "../../services/request";
 // =======================================================================
 
 export default function ListCharacter({setIdCharacter}: IListCharacter): JSX.Element {

@@ -7,6 +7,7 @@
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(220px, 225px));
         justify-content: space-between;
+        align-items: flex-start;
         row-gap: 55px;
         margin-bottom: 45px;
 
@@ -35,6 +36,7 @@
                     line-height: 16px;
                     letter-spacing: 0em;
                     margin-bottom: 5px;
+                    color: black;
                 }
 
                 p {

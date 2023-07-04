@@ -54,13 +54,20 @@
     .link {
         flex-grow: 1;
         text-align: right;
-        .back {
+        a{ 
             font-family: "Roboto Condensed", sans-serif;
             font-size: 18px;
             font-weight: 700;
             line-height: 21px;
             letter-spacing: 0em;
+            color: black;
             cursor: pointer;
         }
     }
+}
+
+.loadComic {
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
 }

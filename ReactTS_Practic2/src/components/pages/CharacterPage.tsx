@@ -20,16 +20,16 @@ import bgImage from "../../images/decoration/bgMain.png";
 // =======================================================================
 
 export default function CharacterPage():JSX.Element {
-    const [idCharacter, setIdCharacter] = useState<number>(-1);
+  const [idCharacter, setIdCharacter] = useState<number>(-1);
 
-    return (
-        <main>
-          <RandomCharacter />
-          <div className="moreCharacter">
-            <ListCharacter setIdCharacter={setIdCharacter}/>
-            <InfoCharacter idCharacter={idCharacter}/>
-          </div>
-          <div className="bgImage"><img src={bgImage} alt="bg" /></div>
-        </main>
-    )
+  return (
+      <main>
+        <RandomCharacter />
+        <div className="moreCharacter">
+          <ListCharacter setIdCharacter={setIdCharacter}/>
+          <InfoCharacter idCharacter={idCharacter}/>
+        </div>
+        <div className="bgImage"><img src={bgImage} alt="bg" /></div>
+      </main>
+  )
 }

@@ -17,9 +17,12 @@ export interface ExpandedCharacter {
     wiki: string
 }
 
-export interface Comics {
+export interface Comic {
     id: number,
     img: string,
     title: string,
-    price: number
+    price: number,
+    description?: string,
+    pages?: string,
+    language?: string
 }
