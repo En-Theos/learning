@@ -1,7 +1,6 @@
 // Імпорти NPM ===========================================================
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { JSX } from "react/jsx-runtime";
-import { Transition } from 'react-transition-group';
 // =======================================================================
 
 // Імпорти компонентів ===================================================
@@ -22,14 +21,15 @@ import "./listCharacter.scss";
 import loadBtn from "../../images/buttons/loading.gif";
 // =======================================================================
 
-// Імпорти функцій =======================================================
-import { onAddDataCharacter } from "../../services/request";
+// Імпорти хуків =========================================================
+import { useMarvelAPI } from "../../hooks";
 // =======================================================================
 
 export default function ListCharacter({setIdCharacter}: IListCharacter): JSX.Element {
     // Використання useState, дані при зміні яких має змінюватись і сам компонент =====================
-    const [componentData, setComponentData] = useState<Character[] | "load" | "error">("load");
-    const [IN, setIN] = useState<boolean>(false);
+    const {componentData, getData, addData} = useMarvelAPI<Character>(
+        {id: true, img: true, name: true}
+    );
     // ================================================================================================
 
     // Використання useRef (дані), дані що мають наскрізне збереження =================================
@@ -38,34 +38,15 @@ export default function ListCharacter({setIdCharacter}: IListCharacter): JSX.Ele
 
     // Використання useRef (елементи), посилання на елементи DOM структурі ============================
     const btn = useRef<HTMLButtonElement>(null);
-    const nodeRef = useRef(null);
     // ================================================================================================
 
     // Використання useEffect, дії що потрібно виконувати: ============================================
     // При першій загрузці компонента 
     useEffect(() => {
-        fetch(`https://gateway.marvel.com:443/v1/public/characters?limit=9&offset=${offset.current}&apikey=6953019632a49d4f4f7a4c1138ab2248`)
-            .then((response) => {
-                if (!response.ok || response.status !== 200) {
-                    setComponentData("error");
-                } else {
-                    return response.json();
-                }
-            }).then(data => {
-                const newdata: Character[] = data.data.results.map((obj: any) => {
-                    return { id: obj.id, img: `${obj.thumbnail.path}.${obj.thumbnail.extension}`, name: obj.name }
-                });
-                setComponentData(newdata);
-            }).catch(() => {
-                setComponentData("error");
-            });
+        getData(`https://gateway.marvel.com:443/v1/public/characters?limit=9&offset=${offset.current}&apikey=6953019632a49d4f4f7a4c1138ab2248`);
     }, []);
     // При зміні якогось state або props
-    useEffect(() => {
-       if (typeof componentData === 'object') {
-            setIN(true);
-       }
-    }, [componentData]);
+ 
     // При видалені компонента із сторінки
 
     // ================================================================================================
@@ -82,18 +63,6 @@ export default function ListCharacter({setIdCharacter}: IListCharacter): JSX.Ele
     // ================================================================================================
     let card: ReactNode[] = [];
 
-    const defaultStyle: any = {
-        transition: `transform 400 ms ease-in-out`,
-        transform: 'scale(0.5)'
-    }
-
-    const transitionStyles: any = {
-        entering: { transform: 'scale(1)' },
-        entered:  { transform: 'scale(1)' },
-        exiting:  { transform: 'scale(1)' },
-        exited:  { transform: 'scale(0.5)' },
-    };
-    
     switch (componentData) {
         case "load":
         case "error":
@@ -110,26 +79,14 @@ export default function ListCharacter({setIdCharacter}: IListCharacter): JSX.Ele
         default:
             card = componentData.map<ReactNode>(({ id, img, name }) => {
                 return (
-                    <Transition nodeRef={nodeRef} in={IN} timeout={{
-                        appear: 300,
-                        enter: 300,
-                        exit: 50000000,
-                       }} key={id} mountOnEnter>
-                        {state => (
-                                <article ref={nodeRef} className="card" onClick={() => setIdCharacter(id)} style={{
-                                    ...defaultStyle,
-                                    ...transitionStyles[state]
-                                  }} >
-                                    <div className="image">
-                                        <img src={img} alt={name} />
-                                    </div>
-                                    <div className="text">
-                                        <h3>{name}</h3>
-                                    </div>
-                                </article>
-                            )
-                        }
-                    </Transition>
+                    <article key={id} className="card anim" onClick={() => setIdCharacter(id)}  >
+                        <div className="image">
+                            <img src={img} alt={name} />
+                        </div>
+                        <div className="text">
+                            <h3>{name}</h3>
+                        </div>
+                    </article>
                 )
             });
             break;
@@ -142,13 +99,8 @@ export default function ListCharacter({setIdCharacter}: IListCharacter): JSX.Ele
             </div>
             <button ref={btn} onClick={() => {
                 if (typeof componentData === "object" && btn.current) {
-                    setIN(false);
-                    onAddDataCharacter({
-                        btn: btn.current, 
-                        offset: offset, 
-                        charactersData: componentData, 
-                        setCharactersData: setComponentData
-                    })
+                    offset.current += 9;
+                    addData(btn.current, `https://gateway.marvel.com:443/v1/public/characters?limit=9&offset=${offset.current}&apikey=6953019632a49d4f4f7a4c1138ab2248`)
                 }
             }}>
                 <span className="default">LOAD MORE</span>

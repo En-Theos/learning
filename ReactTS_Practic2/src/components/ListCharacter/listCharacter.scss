@@ -13,8 +13,14 @@
             box-shadow: 5px 5px 10px 0px #00000040;
             background-color: #232222;
             cursor: pointer;
-            transition: 0.2s;
             height: 334px;
+
+            &.anim {
+                animation-name: showCard;
+                animation-duration: 0.3s;
+                animation-timing-function: ease-in-out;
+                animation-fill-mode: backwards;
+            }
 
             &:hover {
                 transform: translateY(-6px);
@@ -125,5 +131,14 @@
         &::before {
             content: "❗❗❗";
         }
+    }
+}
+
+@keyframes showCard {
+    0% {
+        transform: scale(0.5);
+    } 
+    100% {
+        transform: scale(1);
     }
 }

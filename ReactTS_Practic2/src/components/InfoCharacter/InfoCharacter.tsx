@@ -20,9 +20,15 @@ import "./infoCharacter.scss";
 // Імпорти зображень =====================================================
 // =======================================================================
 
+// Імпорти хуків =========================================================
+import { useMarvelAPI } from "../../hooks";
+// =======================================================================
+
 export default function InfoCharacter({idCharacter}: IInfoCharacterProps): JSX.Element {
     // Використання useState, дані при зміні яких має змінюватись і сам компонент =====================
-    const [componentData, setComponentData] = useState<ExpandedCharacter | "load" | "error">("load");
+    const {componentData, getData} = useMarvelAPI<ExpandedCharacter>(
+        {id: true, img: true, name: true, description: true, comics: true, homepage: true, wiki: true}
+    );
     // ================================================================================================
 
     // Використання useRef (дані), дані що мають наскрізне збереження =================================
@@ -36,31 +42,8 @@ export default function InfoCharacter({idCharacter}: IInfoCharacterProps): JSX.E
 
     // При зміні якогось state або props
     useEffect(() => {
-        setComponentData("load");
-
         if (idCharacter !== -1) {
-            fetch(`https://gateway.marvel.com:443/v1/public/characters/${idCharacter}?apikey=6953019632a49d4f4f7a4c1138ab2248`)
-            .then((response) => {
-                if (!response.ok && response.status !== 200) {
-                    setComponentData("error");
-                } else {
-                    return response.json();
-                }
-            }).then((data) => {
-                const obj = data.data.results[0];
-
-                setComponentData({
-                    id: obj.id,
-                    img: obj.thumbnail.path + '.' + obj.thumbnail.extension,
-                    name: obj.name,
-                    description: obj.description ? obj.description : "This character has no description",
-                    comics: obj.comics.items.map((obj: any) => obj.name),
-                    homepage: obj.urls[0].url,
-                    wiki: obj.urls[1].url
-                });
-            }).catch(() => {
-                setComponentData("error");
-            });
+            getData(`https://gateway.marvel.com:443/v1/public/characters/${idCharacter}?apikey=6953019632a49d4f4f7a4c1138ab2248`);
         }
     }, [idCharacter]);
     // При видалені компонента із сторінки
@@ -88,23 +71,23 @@ export default function InfoCharacter({idCharacter}: IInfoCharacterProps): JSX.E
                 <aside className="moreInfo">
                     <div className="header">
                         <div className="image">
-                            <img src={componentData.img} alt={componentData.name} />
+                            <img src={componentData[0].img} alt={componentData[0].name} />
                         </div>
                         <div className="info">
-                            <h3 className="name">{componentData.name}</h3>
+                            <h3 className="name">{componentData[0].name}</h3>
                             <div className="buttons">
-                                <button className="homepage"><a href={componentData.homepage}>HOMEPAGE</a></button>
-                                <button className="wiki"><a href={componentData.wiki}>WIKI</a></button>
+                                <button className="homepage"><a href={componentData[0].homepage}>HOMEPAGE</a></button>
+                                <button className="wiki"><a href={componentData[0].wiki}>WIKI</a></button>
                             </div>
                         </div>
                     </div>
                     <div className="description">
-                        <p>{componentData.description}</p>
+                        <p>{componentData[0].description}</p>
                     </div>
-                    <div className="comics">
+                    <div className="characterComics">
                         <h4>Comics:</h4>
                         <ul>
-                            {componentData.comics.map((name: string, i) => {
+                            {componentData[0].comics.map((name: string, i) => {
                                 return <li key={i}>{name}</li>
                             })}
                         </ul>

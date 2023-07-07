@@ -1,6 +1,6 @@
 // Імпорти NPM ===========================================================
 import { JSX } from "react/jsx-runtime";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 // =======================================================================
 
 // Імпорти компонентів ===================================================
@@ -19,9 +19,15 @@ import "./randomCharacter.scss";
 // Імпорти зображень =====================================================
 // =======================================================================
 
+// Імпорти хуків =========================================================
+import { useMarvelAPI } from "../../hooks";
+// =======================================================================
+
 export default function RandomCharacter(): JSX.Element {
     // Використання useState, дані при зміні яких має змінюватись і сам компонент =====================
-    const [componentData, setComponentData] = useState<Character | "load" | "error">("load");
+    const {componentData, getData} = useMarvelAPI<Character>(
+        {id: true, img: true, name: true, description: true, homepage: true, wiki: true}
+    );
     // ================================================================================================
 
     // Використання useRef (дані), дані що мають наскрізне збереження =================================
@@ -52,35 +58,10 @@ export default function RandomCharacter(): JSX.Element {
     // Використання useCallback, закешовані функції що передаються в інші компоненти як props =========
     // ================================================================================================
                 
-    function onNewCharacter() {
-        setComponentData("load");
-        request()
-    }
-
     function request() {
         const id = Math.floor(Math.random() * (1010789 - 1009146) + 1009146)
 
-        fetch(`https://gateway.marvel.com:443/v1/public/characters/${id}?apikey=6953019632a49d4f4f7a4c1138ab2248`)
-            .then((response) => {
-                if (!response.ok && response.status !== 200) {
-                    setComponentData("error");
-                } else {
-                    return response.json();
-                }
-            }).then((data) => {
-                const obj = data.data.results[0];
-
-                setComponentData({
-                    id: obj.id,
-                    img: obj.thumbnail.path + '.' + obj.thumbnail.extension,
-                    name: obj.name,
-                    description: obj.description.length > 200 ? obj.description.slice(0, 200) + '...' : obj.description ? obj.description : "This character has no description",
-                    homepage: obj.urls[0].url,
-                    wiki: obj.urls[1].url
-                });
-            }).catch(() => {
-                setComponentData("error");
-            });
+        getData(`https://gateway.marvel.com:443/v1/public/characters/${id}?apikey=6953019632a49d4f4f7a4c1138ab2248`)
     }
 
     let randomCharacter: JSX.Element = <div></div>;
@@ -96,14 +77,14 @@ export default function RandomCharacter(): JSX.Element {
             randomCharacter = (
                 <>
                     <div className="img" >
-                        <img src={componentData.img} alt={componentData.name} />
+                        <img src={componentData[0].img} alt={componentData[0].name} />
                     </div>
                     <div className="info">
-                        <h2 className="name">{componentData.name}</h2>
-                        <p className="description">{componentData.description}</p>
+                        <h2 className="name">{componentData[0].name}</h2>
+                        <p className="description">{componentData[0].description}</p>
                         <div className="btn">
-                            <button className="homepage"><a href={componentData.homepage}>HOMEPAGE</a></button>
-                            <button className="wiki"><a href={componentData.wiki}>WIKI</a></button>
+                            <button className="homepage"><a href={componentData[0].homepage}>HOMEPAGE</a></button>
+                            <button className="wiki"><a href={componentData[0].wiki}>WIKI</a></button>
                         </div>
                     </div>
                 </>
@@ -126,7 +107,7 @@ export default function RandomCharacter(): JSX.Element {
                         Or choose another one
                     </span>
                 </p>
-                <button onClick={onNewCharacter}>TRY IT</button>
+                <button onClick={request}>TRY IT</button>
             </article>
         </section>
     );

@@ -15,6 +15,13 @@
             cursor: pointer;
             transition: 0.2s;
 
+            &.anim {
+                animation-name: showCard;
+                animation-duration: 0.3s;
+                animation-timing-function: ease-in-out;
+                animation-fill-mode: backwards;
+            }
+
             &:hover {
                 transform: translateY(-6px);
             }
@@ -69,6 +76,7 @@
         color: white;
         margin: 0 auto;
         transition: 0.2s;
+
         &:hover {
             transform: translateY(-10px);
         }
@@ -77,9 +85,11 @@
             &.default {
                 display: inline;
             }
+
             &.load {
                 display: none;
             }
+
             &.error {
                 display: none;
             }
@@ -95,9 +105,11 @@
             &.default {
                 display: none;
             }
+
             &.load {
                 display: inline;
             }
+
             &.error {
                 display: none;
             }
@@ -115,21 +127,35 @@
             &.default {
                 display: none;
             }
+
             &.load {
                 display: none;
             }
+
             &.error {
                 display: inline;
             }
         }
+
         img {
             display: none;
         }
+
         &::after {
             content: "❗❗❗";
         }
+
         &::before {
             content: "❗❗❗";
         }
+    }
+}
+
+@keyframes showCard {
+    0% {
+        transform: scale(0.5);
+    } 
+    100% {
+        transform: scale(1);
     }
 }

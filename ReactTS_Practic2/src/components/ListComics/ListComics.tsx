@@ -21,13 +21,13 @@ import "./listComics.scss";
 import loadBtn from "../../images/buttons/loading.gif";
 // =======================================================================
 
-// Імпорти функцій =======================================================
-import { onAddDataCharacter } from "../../services/request";
+// Імпорти хуків =========================================================
+import { useMarvelAPI } from "../../hooks";
 // =======================================================================
 
 export default function ListComics(): JSX.Element {
     // Використання useState, дані при зміні яких має змінюватись і сам компонент =====================
-    const [componentData, setComponentData] = useState<Comic[] | "load" | "error">("load");
+    const {componentData, getData, addData} = useMarvelAPI<Comic>({id: true, img: true, title: true, price: true});
     // ================================================================================================
 
     // Використання useRef (дані), дані що мають наскрізне збереження =================================
@@ -41,23 +41,7 @@ export default function ListComics(): JSX.Element {
     // Використання useEffect, дії що потрібно виконувати: ============================================
     // При першій загрузці компонента 
     useEffect(() => {
-        fetch(`https://gateway.marvel.com:443/v1/public/comics?limit=8&offset=${offset.current}&apikey=6953019632a49d4f4f7a4c1138ab2248`)
-        .then((response) => {
-            if (!response.ok && response.status !== 200) {
-                setComponentData("error");
-            } else {
-                return response.json();
-            }
-        }).then((data) => {
-            setComponentData(data.data.results.map((obj: any) => ({
-                id: obj.id,
-                img: obj.thumbnail.path + '.' + obj.thumbnail.extension,
-                title: obj.title,
-                price: obj.prices[0].price ? obj.prices[0].price + "$": obj.prices[0].price
-            })))
-        }).catch(() => {
-            setComponentData("error");
-        });
+        getData(`https://gateway.marvel.com:443/v1/public/comics?limit=8&offset=${offset.current}&apikey=6953019632a49d4f4f7a4c1138ab2248` );
     }, []);
     // При зміні якогось state або props
 
@@ -93,7 +77,7 @@ export default function ListComics(): JSX.Element {
         default:
             card = componentData.map<ReactNode>(({id, img, title, price}) => {
                 return (
-                    <article key={id} className="card">
+                    <article key={id} className="card anim">
                         <Link to={`${id}`}>
                             <div className="image">
                                 <img src={img} alt={title} />
@@ -116,12 +100,8 @@ export default function ListComics(): JSX.Element {
             </div>
             <button ref={btn} onClick={() => {
                 if (typeof componentData === "object" && btn.current) {
-                    onAddDataCharacter({
-                        btn: btn.current, 
-                        offset: offset, 
-                        comicsData: componentData, 
-                        setComicsData: setComponentData
-                    })
+                    offset.current += 8;
+                    addData(btn.current, `https://gateway.marvel.com:443/v1/public/comics?limit=8&offset=${offset.current}&apikey=6953019632a49d4f4f7a4c1138ab2248`)
                 }
             }}>
                 <span className="default">LOAD MORE</span>
