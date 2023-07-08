@@ -4,6 +4,7 @@ import { JSX } from "react/jsx-runtime";
 
 // Імпорти компонентів ===================================================
 import InfoComic from '../InfoComic/InfoComic';
+import MessageComics from "../MessageComics/MessageComics";
 // =======================================================================
 
 // Імпорти інтерфейсів ===================================================
@@ -18,6 +19,7 @@ import InfoComic from '../InfoComic/InfoComic';
 export default function ComicPage():JSX.Element {
   return (
       <main>
+        <MessageComics/>
         <InfoComic/>
       </main>
   )

@@ -1,20 +1,20 @@
 // Імпорти NPM ===========================================================
-import { ReactNode, useEffect, useRef } from "react";
 import { JSX } from "react/jsx-runtime";
+import { ReactNode } from "react";
+import { Field, Form, Formik, ErrorMessage } from 'formik';
+import { Link } from "react-router-dom";
+import * as Yup from "yup"
 // =======================================================================
 
 // Імпорти компонентів ===================================================
-import LoadListCharacter from "../LoadBlocks/LoadListCharacter/LoadListCharacter";
-import ErrorListCharacter from "../ErrorBlocks/ErrorListCharacter/ErrorListCharacter";
 // =======================================================================
 
 // Імпорти інтерфейсів ===================================================
 import { Character } from "../../interfaces/globalIntefaces";
-import IListCharacter from "./interfaces";
 // =======================================================================
 
 // Імпорти стилів=========================================================
-import "./listCharacter.scss";
+import "./searchCharacter.scss";
 // =======================================================================
 
 // Імпорти зображень =====================================================
@@ -25,28 +25,21 @@ import loadBtn from "../../images/buttons/loading.gif";
 import { useMarvelAPI } from "../../hooks";
 // =======================================================================
 
-export default function ListCharacter({setIdCharacter}: IListCharacter): JSX.Element {
+export default function SearchCharacter(): JSX.Element {
     // Використання useState, дані при зміні яких має змінюватись і сам компонент =====================
-    const {componentData, getData, addData} = useMarvelAPI<Character>(
-        {id: true, img: true, name: true}
-    );
+    let {componentData, getData} = useMarvelAPI<Character>({id: true, name: true});
     // ================================================================================================
 
     // Використання useRef (дані), дані що мають наскрізне збереження =================================
-    const offset = useRef(200);
     // ================================================================================================
 
     // Використання useRef (елементи), посилання на елементи DOM структурі ============================
-    const btn = useRef<HTMLButtonElement>(null);
     // ================================================================================================
 
     // Використання useEffect, дії що потрібно виконувати: ============================================
     // При першій загрузці компонента 
-    useEffect(() => {
-        getData(`https://gateway.marvel.com:443/v1/public/characters?limit=9&offset=${offset.current}&apikey=6953019632a49d4f4f7a4c1138ab2248`);
-    }, []);
+
     // При зміні якогось state або props
- 
     // При видалені компонента із сторінки
 
     // ================================================================================================
@@ -61,53 +54,55 @@ export default function ListCharacter({setIdCharacter}: IListCharacter): JSX.Ele
 
     // Використання useCallback, закешовані функції що передаються в інші компоненти як props =========
     // ================================================================================================
-    let card: ReactNode[] = [];
 
-    switch (componentData) {
-        case "load":
-        case "error":
-            for (let i = 0; i < 9; i++) {
-                card.push((
-                    <article key={i} className="card">
-                        {
-                            componentData === "load" ? <LoadListCharacter /> : <ErrorListCharacter />
-                        }
-                    </article>
-                ));
-            }
-            break;
-        default:
-            card = componentData.map<ReactNode>(({ id, img, name }) => {
-                return (
-                    <article key={id} className="card anim" onClick={() => setIdCharacter(id)}  >
-                        <div className="image">
-                            <img src={img} alt={name} />
-                        </div>
-                        <div className="text">
-                            <h3>{name}</h3>
-                        </div>
-                    </article>
-                )
-            });
-            break;
+    function messageSwitching(valueInput?:string) {
+        let messageRequest: ReactNode = null;
+
+        if (Array.isArray(componentData) && componentData.length) {
+            messageRequest = <div className="successMessage">
+                <p>There is! Visit {componentData[0].name} page?</p>
+                <button type="button"><Link to={`character/${componentData[0].id}`}>TO PAGE</Link></button>
+            </div>;
+        } else if (Array.isArray(componentData)) {
+            messageRequest = <p className="errorMessage">The character was not found. Check the name and try again</p>;
+        }
+
+        let messageSearch: ReactNode = null;
+
+        if (valueInput) {
+            componentData = "load";
+            messageSearch = <ErrorMessage component="p" className="errorMessage" name="nameCharacter"/> 
+        } else {
+            messageSearch = messageRequest;
+        }
+ 
+        return messageSearch
     }
+    
+    
+    
 
     return (
-        <section className="listCharacter">
-            <div className="cards">
-                {card}
-            </div>
-            <button ref={btn} onClick={() => {
-                if (typeof componentData === "object" && btn.current) {
-                    offset.current += 9;
-                    addData(btn.current, `https://gateway.marvel.com:443/v1/public/characters?limit=9&offset=${offset.current}&apikey=6953019632a49d4f4f7a4c1138ab2248`)
-                }
-            }}>
-                <span className="default">LOAD MORE</span>
-                <span className="load">LOADING </span>
-                <span className="error">ERROR </span>
-                <img src={loadBtn} alt="loading" />
-            </button>
-        </section>
-    );
+        <div className="searchForm">
+            <Formik 
+                initialValues={{
+                    nameCharacter: ''
+                }}
+                validationSchema={Yup.object({
+                    nameCharacter: Yup.string().required("This field is required")
+                })}
+                onSubmit={({nameCharacter}) => getData(`https://gateway.marvel.com:443/v1/public/characters?name=${nameCharacter}&apikey=6953019632a49d4f4f7a4c1138ab2248`)}>
+                {props => (
+                    <Form>
+                        <p className="label">Or find a character by name:</p>
+                        <div>
+                            <Field className="searchInput" type="text" name="nameCharacter" placeholder="Enter name"/>
+                            <button type="submit" className="findBtn">FIND</button>
+                        </div>
+                        {messageSwitching(props.errors.nameCharacter)}
+                    </Form>
+                )}
+            </Formik>
+        </div>
+    )
 }

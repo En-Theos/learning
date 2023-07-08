@@ -1,52 +1,52 @@
 // Імпорти NPM ===========================================================
-import { ReactNode, useEffect, useRef } from "react";
+import { Link, useParams } from "react-router-dom";
+import { useEffect } from "react";
 import { JSX } from "react/jsx-runtime";
 // =======================================================================
 
 // Імпорти компонентів ===================================================
-import LoadListCharacter from "../LoadBlocks/LoadListCharacter/LoadListCharacter";
-import ErrorListCharacter from "../ErrorBlocks/ErrorListCharacter/ErrorListCharacter";
+import { Page404 } from "../pages";
 // =======================================================================
 
 // Імпорти інтерфейсів ===================================================
 import { Character } from "../../interfaces/globalIntefaces";
-import IListCharacter from "./interfaces";
 // =======================================================================
 
 // Імпорти стилів=========================================================
-import "./listCharacter.scss";
+import "./infoChar.scss";
 // =======================================================================
 
 // Імпорти зображень =====================================================
-import loadBtn from "../../images/buttons/loading.gif";
+import loadImage from "../../images/buttons/loading.gif"
 // =======================================================================
 
 // Імпорти хуків =========================================================
 import { useMarvelAPI } from "../../hooks";
 // =======================================================================
 
-export default function ListCharacter({setIdCharacter}: IListCharacter): JSX.Element {
+export default function InfoComic():JSX.Element {
+    const { idCharacter } = useParams();
+
     // Використання useState, дані при зміні яких має змінюватись і сам компонент =====================
-    const {componentData, getData, addData} = useMarvelAPI<Character>(
-        {id: true, img: true, name: true}
+    const {componentData, getData} = useMarvelAPI<Character>(
+        {id: true, img: true, name: true, description: true}
     );
     // ================================================================================================
 
     // Використання useRef (дані), дані що мають наскрізне збереження =================================
-    const offset = useRef(200);
     // ================================================================================================
 
     // Використання useRef (елементи), посилання на елементи DOM структурі ============================
-    const btn = useRef<HTMLButtonElement>(null);
     // ================================================================================================
 
     // Використання useEffect, дії що потрібно виконувати: ============================================
     // При першій загрузці компонента 
-    useEffect(() => {
-        getData(`https://gateway.marvel.com:443/v1/public/characters?limit=9&offset=${offset.current}&apikey=6953019632a49d4f4f7a4c1138ab2248`);
-    }, []);
+
     // При зміні якогось state або props
- 
+    useEffect(() => {
+        console.log(idCharacter);
+        getData(`https://gateway.marvel.com:443/v1/public/characters/${idCharacter}?apikey=6953019632a49d4f4f7a4c1138ab2248`);
+    }, [idCharacter]);
     // При видалені компонента із сторінки
 
     // ================================================================================================
@@ -61,53 +61,31 @@ export default function ListCharacter({setIdCharacter}: IListCharacter): JSX.Ele
 
     // Використання useCallback, закешовані функції що передаються в інші компоненти як props =========
     // ================================================================================================
-    let card: ReactNode[] = [];
-
     switch (componentData) {
         case "load":
+            return (
+                <div className="loadComic">
+                    <img src={loadImage} alt="loading" />
+                </div>
+            )
         case "error":
-            for (let i = 0; i < 9; i++) {
-                card.push((
-                    <article key={i} className="card">
-                        {
-                            componentData === "load" ? <LoadListCharacter /> : <ErrorListCharacter />
-                        }
-                    </article>
-                ));
-            }
-            break;
+            return (
+                <Page404/>
+            )
         default:
-            card = componentData.map<ReactNode>(({ id, img, name }) => {
-                return (
-                    <article key={id} className="card anim" onClick={() => setIdCharacter(id)}  >
-                        <div className="image">
-                            <img src={img} alt={name} />
-                        </div>
-                        <div className="text">
-                            <h3>{name}</h3>
-                        </div>
-                    </article>
-                )
-            });
-            break;
+            return (
+                <div className="comics">
+                    <div className="image">
+                        <img src={componentData[0].img} alt={componentData[0].name} />
+                    </div>
+                    <div className="info">
+                        <h3>{componentData[0].name}</h3>
+                        <p className="description">{componentData[0].description}</p>
+                    </div>
+                    <div className="link">
+                        <Link to={"/"}>Back to all</Link>
+                    </div>
+                </div>
+            )   
     }
-
-    return (
-        <section className="listCharacter">
-            <div className="cards">
-                {card}
-            </div>
-            <button ref={btn} onClick={() => {
-                if (typeof componentData === "object" && btn.current) {
-                    offset.current += 9;
-                    addData(btn.current, `https://gateway.marvel.com:443/v1/public/characters?limit=9&offset=${offset.current}&apikey=6953019632a49d4f4f7a4c1138ab2248`)
-                }
-            }}>
-                <span className="default">LOAD MORE</span>
-                <span className="load">LOADING </span>
-                <span className="error">ERROR </span>
-                <img src={loadBtn} alt="loading" />
-            </button>
-        </section>
-    );
 }

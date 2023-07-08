@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // Імпорти компонентів ===================================================
 import Header from '../Header/Header';
-import { CharacterPage, ComicsPage, ComicPage, Page404 } from "../pages"
+import { CharactersPage, ComicsPage, ComicPage, Page404, CharacterPage } from "../pages"
 // =======================================================================
 
 // Імпорти інтерфейсів ===================================================
@@ -25,9 +25,10 @@ export default function App(): JSX.Element {
         <div className="limit">
           <Header />
           <Routes>
-            <Route path="/" element={<CharacterPage/>}/>
+            <Route path="/" element={<CharactersPage/>}/>
             <Route path="comics" element={<ComicsPage/>}/>
             <Route path="comics/:idComic" element={<ComicPage/>}/>
+            <Route path="character/:idCharacter" element={<CharacterPage/>}/>
             <Route path="*" element={<Page404/>}/>
           </Routes>
         </div>

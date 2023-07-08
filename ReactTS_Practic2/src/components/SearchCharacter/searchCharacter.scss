@@ -1,0 +1,94 @@
+.searchForm {
+    width: 425px;
+    background-color: white;
+    box-shadow: 0px 0px 20px 0px #00000040;
+    padding: 25px;
+
+    .label {
+        font-family: "Roboto Condensed", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 21px;
+        letter-spacing: 0em;
+        color: #000;
+        margin-bottom: 15px;
+    }
+
+    div {
+        display: flex;
+        margin-bottom: 25px;
+        .searchInput {
+            width: 250px;
+            height: 38px;
+            padding: 10px;
+            font-family: "Roboto Condensed", sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 16px;
+            letter-spacing: 0em;
+            box-shadow: 0px 4px 4px 0px #00000040;
+            margin-right: 24px;
+        }
+
+        .findBtn {
+            display: block;
+            width: 100px;
+            height: 38px;
+            background-color: inherit;
+            transition: 0.2s;
+            font-family: "Roboto Condensed", sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 16px;
+            letter-spacing: 0em;
+            color: white;
+            background-image: url('../../images/buttons/buttonRed.png');
+
+            &:hover {
+                transform: translateY(-10px);
+            }
+        }
+    }
+
+    .errorMessage {
+        font-family: "Roboto Condensed", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 21px;
+        letter-spacing: 0em;
+        color: #9F0013;
+    }
+
+    .successMessage {
+        display: flex;
+        justify-content: space-between;
+        p {
+            font-family: "Roboto Condensed", sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 21px;
+            letter-spacing: 0em;
+            color: #03710E;
+        }
+        button {
+            display: block;
+            width: 100px;
+            height: 38px;
+            background-color: inherit;
+            transition: 0.2s;
+            background-image: url('../../images/buttons/buttonGray.png');
+
+            &:hover {
+                transform: translateY(-10px);
+            }
+            a {
+                font-family: "Roboto Condensed", sans-serif;
+                font-size: 14px;
+                font-weight: 400;
+                line-height: 16px;
+                letter-spacing: 0em;
+                color: white;
+            }
+        }
+    }
+}
