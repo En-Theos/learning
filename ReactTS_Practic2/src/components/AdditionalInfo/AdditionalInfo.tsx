@@ -1,35 +1,33 @@
 // Імпорти NPM ===========================================================
-import { useParams, Link } from "react-router-dom";
 import { useEffect } from "react";
 import { JSX } from "react/jsx-runtime";
 // =======================================================================
 
 // Імпорти компонентів ===================================================
-import { Page404 } from "../pages";
+import LoadInfoCharacter from "../LoadBlocks/LoadInfoCharacter/LoadInfoCharacter";
+import ErrorInfoCharacter from "../ErrorBlocks/ErrorInfoCharacter/ErrorInfoCharacter";
 // =======================================================================
 
 // Імпорти інтерфейсів ===================================================
-import { Comic } from "../../interfaces/globalIntefaces";
+import IAdditionalInfoProps from "./interfaces";
+import { ExpandedCharacter } from "../../interfaces/globalIntefaces";
 // =======================================================================
 
 // Імпорти стилів=========================================================
-import "./infoComic.scss";
+import "./additionalInfo.scss";
 // =======================================================================
 
 // Імпорти зображень =====================================================
-import loadImage from "../../images/buttons/loading.gif"
 // =======================================================================
 
 // Імпорти хуків =========================================================
 import { useMarvelAPI } from "../../hooks";
 // =======================================================================
 
-export default function InfoComic():JSX.Element {
-    const { idComic } = useParams();
-
+export default function AdditionalInfo({idCharacter}: IAdditionalInfoProps): JSX.Element {
     // Використання useState, дані при зміні яких має змінюватись і сам компонент =====================
-    const {componentData, getData} = useMarvelAPI<Comic>(
-        {id: true, img: true, title: true, price: true, description: true, pages: true, language: true}
+    const {componentData, getData} = useMarvelAPI<ExpandedCharacter>(
+        {id: true, img: true, name: true, description: true, comics: true, homepage: true, wiki: true}
     );
     // ================================================================================================
 
@@ -44,8 +42,10 @@ export default function InfoComic():JSX.Element {
 
     // При зміні якогось state або props
     useEffect(() => {
-        getData(`https://gateway.marvel.com:443/v1/public/comics/${idComic}?apikey=6953019632a49d4f4f7a4c1138ab2248`);
-    }, [idComic]);
+        if (idCharacter !== -1) {
+            getData(`https://gateway.marvel.com:443/v1/public/characters/${idCharacter}?apikey=6953019632a49d4f4f7a4c1138ab2248`);
+        }
+    }, [idCharacter]);
     // При видалені компонента із сторінки
 
     // ================================================================================================
@@ -60,34 +60,39 @@ export default function InfoComic():JSX.Element {
 
     // Використання useCallback, закешовані функції що передаються в інші компоненти як props =========
     // ================================================================================================
+
     switch (componentData) {
         case "load":
-            return (
-                <div className="loadComic">
-                    <img src={loadImage} alt="loading" />
-                </div>
-            )
+            return <LoadInfoCharacter/>
         case "error":
-            return (
-                <Page404/>
-            )
+            return <ErrorInfoCharacter/>
         default:
             return (
-                <div className="comics">
-                    <div className="image">
-                        <img src={componentData[0].img} alt={componentData[0].title} />
+                <aside className="additionalInfo">
+                    <div className="header">
+                        <div className="image">
+                            <img src={componentData[0].img} alt={componentData[0].name} />
+                        </div>
+                        <div className="info">
+                            <h3 className="name">{componentData[0].name}</h3>
+                            <div className="buttons">
+                                <button className="homepage"><a href={componentData[0].homepage}>HOMEPAGE</a></button>
+                                <button className="wiki"><a href={componentData[0].wiki}>WIKI</a></button>
+                            </div>
+                        </div>
                     </div>
-                    <div className="info">
-                        <h3>{componentData[0].title}</h3>
-                        <p className="description">{componentData[0].description}</p>
-                        <p className="pages">{componentData[0].pages} pages</p>
-                        <p className="language">Language: {componentData[0].language}</p>
-                        <p className="price">{componentData[0].price}$</p>
+                    <div className="description">
+                        <p>{componentData[0].description}</p>
                     </div>
-                    <div className="link">
-                        <Link to={"/comics"}>Back to all</Link>
+                    <div className="characterComics">
+                        <h4>Comics:</h4>
+                        <ul>
+                            {componentData[0].comics.map((name: string, i) => {
+                                return <li key={i}>{name}</li>
+                            })}
+                        </ul>
                     </div>
-                </div>
-            )   
+                </aside>
+            )
     }
 }

@@ -1,5 +1,5 @@
 // Імпорти NPM ===========================================================
-import { Link, useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useEffect } from "react";
 import { JSX } from "react/jsx-runtime";
 // =======================================================================
@@ -9,11 +9,11 @@ import { Page404 } from "../pages";
 // =======================================================================
 
 // Імпорти інтерфейсів ===================================================
-import { Character } from "../../interfaces/globalIntefaces";
+import IMoreInfoProps from "./interfaces";
 // =======================================================================
 
 // Імпорти стилів=========================================================
-import "./infoChar.scss";
+import "./moreInfo.scss";
 // =======================================================================
 
 // Імпорти зображень =====================================================
@@ -24,13 +24,11 @@ import loadImage from "../../images/buttons/loading.gif"
 import { useMarvelAPI } from "../../hooks";
 // =======================================================================
 
-export default function InfoComic():JSX.Element {
-    const { idCharacter } = useParams();
+export default function MoreInfo<T extends object>({url, data}: IMoreInfoProps):JSX.Element {
+    const { id } = useParams();
 
     // Використання useState, дані при зміні яких має змінюватись і сам компонент =====================
-    const {componentData, getData} = useMarvelAPI<Character>(
-        {id: true, img: true, name: true, description: true}
-    );
+    const {componentData, getData} = useMarvelAPI<T>(data);
     // ================================================================================================
 
     // Використання useRef (дані), дані що мають наскрізне збереження =================================
@@ -44,9 +42,8 @@ export default function InfoComic():JSX.Element {
 
     // При зміні якогось state або props
     useEffect(() => {
-        console.log(idCharacter);
-        getData(`https://gateway.marvel.com:443/v1/public/characters/${idCharacter}?apikey=6953019632a49d4f4f7a4c1138ab2248`);
-    }, [idCharacter]);
+        getData(`https://gateway.marvel.com:443/v1/public/${url}/${id}?apikey=6953019632a49d4f4f7a4c1138ab2248`);
+    }, [id]);
     // При видалені компонента із сторінки
 
     // ================================================================================================
@@ -61,6 +58,15 @@ export default function InfoComic():JSX.Element {
 
     // Використання useCallback, закешовані функції що передаються в інші компоненти як props =========
     // ================================================================================================
+
+    function chekProperty(poperty: string) {
+        if (typeof componentData === "object") {
+            if (poperty in componentData[0]) {
+                return `${componentData[0][poperty as keyof T]}`
+            }
+        }
+    }
+
     switch (componentData) {
         case "load":
             return (
@@ -73,17 +79,26 @@ export default function InfoComic():JSX.Element {
                 <Page404/>
             )
         default:
+            const h3 = data.name ? <h3>{chekProperty("name")}</h3> : <h3>{chekProperty("title")}</h3>
+
+            const pages = data.pages ? <p className="pages">{chekProperty("pages")} pages</p> : null;
+            const language = data.language ? <p className="language">Language: {chekProperty("language")}</p> : null;
+            const price = data.price ? <p className="price">{chekProperty("price")}$</p> : null;
+
             return (
                 <div className="comics">
                     <div className="image">
-                        <img src={componentData[0].img} alt={componentData[0].name} />
+                        <img src={chekProperty("img")} alt={url} />
                     </div>
                     <div className="info">
-                        <h3>{componentData[0].name}</h3>
-                        <p className="description">{componentData[0].description}</p>
+                        {h3}
+                        <p className="description">{chekProperty("description")}</p>
+                        {pages}
+                        {language}
+                        {price}
                     </div>
                     <div className="link">
-                        <Link to={"/"}>Back to all</Link>
+                        <Link to={url === "characters" ? "/" : "/comics"}>Back to all</Link>
                     </div>
                 </div>
             )   

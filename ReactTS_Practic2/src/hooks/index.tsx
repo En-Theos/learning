@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Data } from "../interfaces/globalIntefaces";
 
 export function useMarvelAPI<T>(
     {
@@ -8,15 +9,7 @@ export function useMarvelAPI<T>(
         language, pages,
         homepage, wiki,
         comics
-    }
-        : {
-            id?: boolean, img?: boolean,
-            title?: boolean, name?: boolean,
-            price?: boolean, description?: boolean,
-            language?: boolean, pages?: boolean,
-            homepage?: boolean, wiki?: boolean,
-            comics?: boolean
-        }
+    }: Data
 ): {
     componentData: "load" | "error" | Array<T>;
     getData: (url: string) => void;

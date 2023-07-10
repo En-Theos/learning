@@ -4,10 +4,11 @@ import { JSX } from "react/jsx-runtime";
 
 // Імпорти компонентів ===================================================
 import MessageComics from "../MessageComics/MessageComics";
-import InfoChar from "../InfoChar/InfoChar";
+import MoreInfo from "../MoreInfo/MoreInfo";
 // =======================================================================
 
 // Імпорти інтерфейсів ===================================================
+import { Character } from "../../interfaces/globalIntefaces";
 // =======================================================================
 
 // Імпорти стилів ========================================================
@@ -20,7 +21,7 @@ export default function CharacterPage():JSX.Element {
   return (
       <main>
         <MessageComics/>
-        <InfoChar/>
+        <MoreInfo<Character> url={"characters"} data={{id: true, img: true, name: true, description: true}}/>
       </main>
   )
 }

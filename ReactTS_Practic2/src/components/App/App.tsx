@@ -27,8 +27,8 @@ export default function App(): JSX.Element {
           <Routes>
             <Route path="/" element={<CharactersPage/>}/>
             <Route path="comics" element={<ComicsPage/>}/>
-            <Route path="comics/:idComic" element={<ComicPage/>}/>
-            <Route path="character/:idCharacter" element={<CharacterPage/>}/>
+            <Route path="comics/:id" element={<ComicPage/>}/>
+            <Route path="character/:id" element={<CharacterPage/>}/>
             <Route path="*" element={<Page404/>}/>
           </Routes>
         </div>

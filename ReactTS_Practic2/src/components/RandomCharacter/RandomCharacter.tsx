@@ -74,6 +74,15 @@ export default function RandomCharacter(): JSX.Element {
             randomCharacter = <ErrorRandomCharacter/>
             break;
         default:
+            let desc: string = "";
+            if (typeof componentData[0].description === "string") {
+                if (componentData[0].description.length > 200) {
+                    desc = componentData[0].description?.slice(0, 200) + "...";
+                } else {
+                    desc = componentData[0].description;
+                }
+            }
+
             randomCharacter = (
                 <>
                     <div className="img" >
@@ -81,7 +90,7 @@ export default function RandomCharacter(): JSX.Element {
                     </div>
                     <div className="info">
                         <h2 className="name">{componentData[0].name}</h2>
-                        <p className="description">{componentData[0].description}</p>
+                        <p className="description">{ desc }</p>
                         <div className="btn">
                             <button className="homepage"><a href={componentData[0].homepage}>HOMEPAGE</a></button>
                             <button className="wiki"><a href={componentData[0].wiki}>WIKI</a></button>

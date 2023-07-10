@@ -26,3 +26,12 @@ export interface Comic {
     pages?: string,
     language?: string
 }
+
+export interface Data {
+    id?: boolean, img?: boolean,
+    title?: boolean, name?: boolean,
+    price?: boolean, description?: boolean,
+    language?: boolean, pages?: boolean,
+    homepage?: boolean, wiki?: boolean,
+    comics?: boolean
+}

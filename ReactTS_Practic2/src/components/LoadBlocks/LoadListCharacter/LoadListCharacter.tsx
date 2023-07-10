@@ -17,7 +17,9 @@ import { JSX } from "react/jsx-runtime";
 
 export default function LoadListCharacter():JSX.Element {
     return (
+      <div style={{backgroundColor: "#232222"}}>
         <MyLoader/>
+      </div>
     )
 }
 
@@ -28,12 +30,11 @@ const MyLoader = (props: JSX.IntrinsicAttributes & IContentLoaderProps) => (
       height={334}
       viewBox="0 0 200 334"
       backgroundColor="#232222"
-      foregroundColor="#322a2a"
+      foregroundColor="#3b3333"
       {...props}
     >
       <rect x="0" y="0" rx="0" ry="0" width="200" height="195" /> 
-      <rect x="0" y="215" rx="0" ry="0" width="200" height="25" /> 
-      <rect x="0" y="260" rx="0" ry="0" width="200" height="25" /> 
-      <rect x="0" y="305" rx="0" ry="0" width="200" height="25" />
+      <rect x="0" y="215" rx="0" ry="0" width="200" height="100" /> 
+      
     </ContentLoader>
   )

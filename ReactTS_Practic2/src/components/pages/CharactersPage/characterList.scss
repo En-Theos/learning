@@ -11,10 +11,13 @@
 
         .card {
             box-shadow: 5px 5px 10px 0px #00000040;
-            background-color: #232222;
             cursor: pointer;
             height: 334px;
 
+            &.bg {
+                background-color: #232222;
+            }
+            
             &.anim {
                 animation-name: showCard;
                 animation-duration: 0.3s;
@@ -58,7 +61,7 @@
         width: 170px;
         height: 38px;
         background-color: inherit;
-        background-image: url('../../images/buttons/buttonRed.png');
+        background-image: url('../../../images/buttons/buttonRed.png');
         background-repeat: no-repeat;
         background-size: 100% 100%;
         font-family: "Roboto Condensed", sans-serif;

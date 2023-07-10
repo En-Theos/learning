@@ -26,7 +26,7 @@ export default function Header(): JSX.Element {
                 <nav className="pages">
                     <p>
                         <NavLink    
-                            end 
+                             
                             to={"/"} 
                             style={({isActive}) => ({color: isActive ? '#9F0013' :  'black'})}>
                             Characters
