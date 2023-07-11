@@ -45,7 +45,7 @@ export function useMarvelAPI<T>(
                     btn.disabled = false;
                     btn.classList.remove("btnLoad");
                     btn.classList.add("btnError");
-                } else {
+                } else { 
                     return response.json();
                 }
             }).then((data) => {
@@ -60,7 +60,7 @@ export function useMarvelAPI<T>(
                 btn.classList.remove("btnLoad");
                 btn.classList.add("btnError");
             });
-    } 
+    }
 
     const filterData = (obj: any) => ({
         id: id ? obj.id : null,

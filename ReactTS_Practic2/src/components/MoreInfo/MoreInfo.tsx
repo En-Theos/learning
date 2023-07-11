@@ -1,6 +1,7 @@
 // Імпорти NPM ===========================================================
 import { useParams, Link } from "react-router-dom";
 import { useEffect } from "react";
+import { Helmet } from "react-helmet";
 import { JSX } from "react/jsx-runtime";
 // =======================================================================
 
@@ -24,11 +25,11 @@ import loadImage from "../../images/buttons/loading.gif"
 import { useMarvelAPI } from "../../hooks";
 // =======================================================================
 
-export default function MoreInfo<T extends object>({url, data}: IMoreInfoProps):JSX.Element {
+export default function MoreInfo<T extends object>({ url, data }: IMoreInfoProps): JSX.Element {
     const { id } = useParams();
 
     // Використання useState, дані при зміні яких має змінюватись і сам компонент =====================
-    const {componentData, getData} = useMarvelAPI<T>(data);
+    const { componentData, getData } = useMarvelAPI<T>(data);
     // ================================================================================================
 
     // Використання useRef (дані), дані що мають наскрізне збереження =================================
@@ -76,7 +77,7 @@ export default function MoreInfo<T extends object>({url, data}: IMoreInfoProps):
             )
         case "error":
             return (
-                <Page404/>
+                <Page404 />
             )
         default:
             const h3 = data.name ? <h3>{chekProperty("name")}</h3> : <h3>{chekProperty("title")}</h3>
@@ -86,21 +87,27 @@ export default function MoreInfo<T extends object>({url, data}: IMoreInfoProps):
             const price = data.price ? <p className="price">{chekProperty("price")}$</p> : null;
 
             return (
-                <div className="comics">
-                    <div className="image">
-                        <img src={chekProperty("img")} alt={url} />
+                <>
+                    <Helmet>
+                        <title>{data.name ? chekProperty("name") : chekProperty("title")}</title>
+                        <meta name="description" content={chekProperty("description")} />
+                    </Helmet>
+                    <div className="comics">
+                        <div className="image">
+                            <img src={chekProperty("img")} alt={url} />
+                        </div>
+                        <div className="info">
+                            {h3}
+                            <p className="description">{chekProperty("description")}</p>
+                            {pages}
+                            {language}
+                            {price}
+                        </div>
+                        <div className="link">
+                            <Link to={url === "characters" ? "/" : "/comics"}>Back to all</Link>
+                        </div>
                     </div>
-                    <div className="info">
-                        {h3}
-                        <p className="description">{chekProperty("description")}</p>
-                        {pages}
-                        {language}
-                        {price}
-                    </div>
-                    <div className="link">
-                        <Link to={url === "characters" ? "/" : "/comics"}>Back to all</Link>
-                    </div>
-                </div>
-            )   
+                </>
+            )
     }
 }

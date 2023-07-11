@@ -1,6 +1,7 @@
 // Імпорти NPM ===========================================================
 import { JSX } from "react/jsx-runtime";
 import { useState } from 'react';
+import {Helmet} from "react-helmet";
 // =======================================================================
 
 // Імпорти компонентів ===================================================
@@ -27,6 +28,10 @@ export default function CharactersPage(): JSX.Element {
 
   return (
     <main>
+      <Helmet>
+        <title>All characters</title>
+        <meta name="description" content="List of all Marvel characters"/>
+      </Helmet>
       <RandomCharacter />
       <div className="moreCharacter">
         <List<Character> mainClass={"listCharacter"} type={"characters"} data={{ id: true, img: true, name: true }} offset={200} limit={9}>

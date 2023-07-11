@@ -1,5 +1,6 @@
 // Імпорти NPM ===========================================================
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet";
 import { JSX } from "react/jsx-runtime";
 // =======================================================================
 
@@ -22,6 +23,10 @@ import "./comicList.scss"
 export default function ComicsPage(): JSX.Element {
     return (
         <main>
+            <Helmet>
+                <title>All comics</title>
+                <meta name="description" content="List of all Marvel comics" />
+            </Helmet>
             <MessageComics />
             <List<Comic>
                 mainClass={"listComics"}

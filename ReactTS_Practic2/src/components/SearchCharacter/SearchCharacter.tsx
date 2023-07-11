@@ -79,9 +79,6 @@ export default function SearchCharacter(): JSX.Element {
         return messageSearch
     }
     
-    
-    
-
     return (
         <div className="searchForm">
             <Formik 

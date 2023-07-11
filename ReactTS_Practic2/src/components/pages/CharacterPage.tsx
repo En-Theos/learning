@@ -17,11 +17,11 @@ import { Character } from "../../interfaces/globalIntefaces";
 // Імпорти зображень =====================================================
 // =======================================================================
 
-export default function CharacterPage():JSX.Element {
+export default function CharacterPage(): JSX.Element {
   return (
-      <main>
-        <MessageComics/>
-        <MoreInfo<Character> url={"characters"} data={{id: true, img: true, name: true, description: true}}/>
-      </main>
+    <main>
+      <MessageComics />
+      <MoreInfo<Character> url={"characters"} data={{ id: true, img: true, name: true, description: true }} />
+    </main>
   )
 }
