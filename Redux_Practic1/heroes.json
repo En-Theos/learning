@@ -1,0 +1,74 @@
+{
+  "heroes": [
+    {
+      "id": 1,
+      "name": "Перший герой",
+      "description": "Перший герой в рейтингу!",
+      "element": "fire"
+    },
+    {
+      "id": 3,
+      "name": "Морський герой",
+      "description": "Як Аквамен, але не з DC",
+      "element": "water"
+    },
+    {
+      "name": "dfgetg",
+      "description": "ccvbcv",
+      "element": "wind",
+      "id": "77c7baaa-397b-4fd2-ac56-3ee8184f1e2d"
+    },
+    {
+      "name": "vbnvbrt",
+      "description": "ccvbcv",
+      "element": "wind",
+      "id": "f71131b5-8970-4156-be51-5d57b3b769d3"
+    },
+    {
+      "name": "dfgdfg4",
+      "description": "ccvbcv",
+      "element": "water",
+      "id": "ea044dad-76f3-4deb-824b-dfdd074ec206"
+    },
+    {
+      "name": "bcvbdgdf",
+      "description": "ccvbcv",
+      "element": "earth",
+      "id": "506d6ad1-eb9a-4135-bc92-b92a484e5822"
+    },
+    {
+      "name": "ffgertetfd",
+      "description": "ccvbcv",
+      "element": "earth",
+      "id": "f45b9b65-dea9-4132-b20d-92f9533cabb5"
+    },
+    {
+      "name": "vbcvbddr",
+      "description": "ccvbcv",
+      "element": "earth",
+      "id": "373abe15-2d83-4bac-b4c0-f96908654210"
+    }
+  ],
+  "filters": [
+    [
+      "all",
+      "Всі"
+    ],
+    [
+      "fire",
+      "Вогонь"
+    ],
+    [
+      "water",
+      "Вода"
+    ],
+    [
+      "wind",
+      "Вітер"
+    ],
+    [
+      "earth",
+      "Земля"
+    ]
+  ]
+}
