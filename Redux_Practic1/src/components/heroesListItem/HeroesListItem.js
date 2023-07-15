@@ -1,6 +1,6 @@
 import {useHttp} from '../../hooks/http.hook';
 import { useDispatch } from 'react-redux';
-import { fetching, heroesFetchedDelete, fetchingError } from '../../actions';
+import { heroesFetching, heroesDelete, heroesFetchingError } from '../../actions';
 
 const HeroesListItem = ({id, name, description, element}) => {
     const dispatch = useDispatch();
@@ -26,11 +26,11 @@ const HeroesListItem = ({id, name, description, element}) => {
     }
 
     function onDelete() {
-        dispatch(fetching());
+        dispatch(heroesFetching());
         request(`http://localhost:3001/heroes/${id}`, "DELETE").then(() => {
-            dispatch(heroesFetchedDelete(id));
+            dispatch(heroesDelete(id));
         }).catch(() => {
-            dispatch(fetchingError());
+            dispatch(heroesFetchingError());
         });
     }
 

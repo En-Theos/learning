@@ -1,47 +1,58 @@
 const initialState = {
     heroes: [],
-    loadingStatus: 'idle',
+    heroesLoadingStatus: 'idle',
     filters: [],
+    filtersLoadingStatus: 'idle',
     activeFilter: 'all'
 }
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'FETCHING':
+        case 'HEROES_FETCHING':
             return {
                 ...state,
-                loadingStatus: 'loading'
+                heroesLoadingStatus: 'loading'
             }
         case 'HEROES_FETCHED':
             return {
                 ...state,
                 heroes: action.payload,
-                loadingStatus: 'idle'
+                heroesLoadingStatus: 'idle'
+            }
+        case 'HEROES_FETCHING_ERROR':
+            return {
+                ...state,
+                heroesLoadingStatus: 'error'
+            }
+        case 'HEROES_ADD':
+            return {
+                ...state,
+                heroes: [...state.heroes, action.payload],
+                heroesLoadingStatus: 'idle'
+            }
+        case 'HEROES_DELETE':
+            return {
+                ...state,
+                heroes: state.heroes.filter(hero => hero.id !== action.payload),
+                heroesLoadingStatus: 'idle'
+            }
+        case 'FILTERS_FETCHING':
+            return {
+                ...state,
+                filtersLoadingStatus: 'loading'
             }
         case 'FILTERS_FETCHED':
             return {
                 ...state,
                 filters: action.payload,
-                loadingStatus: 'idle'
+                filtersLoadingStatus: 'idle'
             }
-        case 'HEROES_FETCHED_ADD':
+        case 'FILTERS_FETCHING_ERROR':
             return {
                 ...state,
-                heroes: [...state.heroes, action.payload],
-                loadingStatus: 'idle'
-            }
-        case 'HEROES_FETCHED_DELETE':
-            return {
-                ...state,
-                heroes: state.heroes.filter(hero => hero.id !== action.payload),
-                loadingStatus: 'idle'
-            }
-        case 'FETCHING_ERROR':
-            return {
-                ...state,
-                loadingStatus: 'error'
-            }
-        case 'FILTER':
+                filtersLoadingStatus: 'error'
+            }     
+        case 'ACTIVE_FILTER_CHANGET':
             return {
                 ...state,
                 activeFilter: action.payload

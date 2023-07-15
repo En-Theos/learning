@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from "classnames"
-import { filter } from '../../actions';
+import { activeFilterChanget } from '../../actions';
 
 const HeroesFilters = () => {
-    const {activeFilter,filters} = useSelector(state => state);
+    const { activeFilter ,filters } = useSelector(state => state);
     const dispatch = useDispatch();
 
     const classes = (type) => {
@@ -25,7 +25,7 @@ const HeroesFilters = () => {
                     {
                         filters.map((item, i) => {
                             return <button key={i} className={classNames(classes(item[0]))}
-                            onClick={() => dispatch(filter(item[0]))}>
+                            onClick={() => dispatch(activeFilterChanget(item[0]))}>
                                 {item[1]}</button>
                         })
                     }

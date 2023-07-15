@@ -1,14 +1,14 @@
 import {useHttp} from '../../hooks/http.hook';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
-import { fetching, heroesFetchedAdd, fetchingError } from '../../actions';
+import { heroesFetching, heroesAdd, heroesFetchingError } from '../../actions';
 
 const HeroesAddForm = () => {
     const filters = useSelector(state => state.filters);
     const dispatch = useDispatch();
     const {request} = useHttp();
 
-    const dataNewHero = {
+    let dataNewHero = {
         name: '',
         description: '',
         element: ''
@@ -17,12 +17,18 @@ const HeroesAddForm = () => {
     function onSubmitForm(event) {
         event.preventDefault();
         if (dataNewHero.name && dataNewHero.description && dataNewHero.element && dataNewHero.element !== "Я владею элементом...") {
-            dispatch(fetching());
+            dispatch(heroesFetching());
             const hero = {...dataNewHero, id: uuidv4()}
             request("http://localhost:3001/heroes", "POST", JSON.stringify(hero)).then(() => {
-                dispatch(heroesFetchedAdd(hero));
+                dispatch(heroesAdd(hero));
+                event.target.reset();
+                dataNewHero = {
+                    name: '',
+                    description: '',
+                    element: ''
+                }
             }).catch(() => {
-                dispatch(fetchingError());
+                dispatch(heroesFetchingError());
             });
         }
     }    

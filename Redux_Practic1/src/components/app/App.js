@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import {useHttp} from '../../hooks/http.hook';
-import { fetching, filtersFetched, fetchingError } from '../../actions';
+import { filtersFetching, filtersFetched, filtersFetchingError } from '../../actions';
 
 import HeroesList from '../heroesList/HeroesList';
 import HeroesAddForm from '../heroesAddForm/HeroesAddForm';
@@ -14,11 +14,11 @@ const App = () => {
     const {request} = useHttp();
 
     useEffect(() => {
-        dispatch(fetching());
+        dispatch(filtersFetching());
         request("http://localhost:3001/filters").then((data) => {
             dispatch(filtersFetched(data));
         }).catch(() => {
-            dispatch(fetchingError());
+            dispatch(filtersFetchingError());
         });
     }, []);
 
