@@ -3,7 +3,7 @@ import classNames from "classnames"
 import { activeFilterChanget } from '../../actions';
 
 const HeroesFilters = () => {
-    const { activeFilter ,filters } = useSelector(state => state);
+    const { activeFilter ,filters } = useSelector(state => state.filters);
     const dispatch = useDispatch();
 
     const classes = (type) => {

@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { heroesFetching, heroesAdd, heroesFetchingError } from '../../actions';
 
 const HeroesAddForm = () => {
-    const filters = useSelector(state => state.filters);
+    const filters = useSelector(state => state.filters.filters);
     const dispatch = useDispatch();
     const {request} = useHttp();
 
@@ -43,7 +43,7 @@ const HeroesAddForm = () => {
                     name="name" 
                     className="form-control" 
                     id="name" 
-                    placeholder="Как меня зовут?"
+                    placeholder="Як мене звати?"
                     onChange={(e) => {
                         dataNewHero.name = e.target.value;
                     }}/>
@@ -56,7 +56,7 @@ const HeroesAddForm = () => {
                     name="text" 
                     className="form-control" 
                     id="text" 
-                    placeholder="Что я умею?"
+                    placeholder="Що я вмію?"
                     style={{"height": '130px'}}
                     onChange={(e) => {
                         dataNewHero.description = e.target.value;
