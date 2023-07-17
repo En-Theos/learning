@@ -1,6 +1,6 @@
 import {useHttp} from '../../hooks/http.hook';
 import { useDispatch } from 'react-redux';
-import { heroesFetching, heroesDelete, heroesFetchingError } from '../../actions';
+import { heroesFetching, heroesDelete, heroesFetchingError } from '../../slices/heroes';
 
 const HeroesListItem = ({id, name, description, element}) => {
     const dispatch = useDispatch();

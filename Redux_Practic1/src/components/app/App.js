@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import {useHttp} from '../../hooks/http.hook';
-import { filtersFetching, filtersFetched, filtersFetchingError } from '../../actions';
+import { filtersFetching, filtersFetched, filtersFetchingError } from '../../slices/filters';
 
 import HeroesList from '../heroesList/HeroesList';
 import HeroesAddForm from '../heroesAddForm/HeroesAddForm';

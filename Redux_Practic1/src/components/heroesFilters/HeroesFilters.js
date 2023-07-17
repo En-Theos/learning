@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from "classnames"
-import { activeFilterChanget } from '../../actions';
+import { activeFilterChanget } from '../../slices/filters';
 
 const HeroesFilters = () => {
     const { activeFilter ,filters } = useSelector(state => state.filters);
