@@ -1,10 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, createEntityAdapter } from "@reduxjs/toolkit"
 
-const initialState = {
-    filters: [],
+const filtersAdapter = createEntityAdapter({
+    selectId: (filter) => filter[0]
+});
+
+const initialState = filtersAdapter.getInitialState({
     filtersLoadingStatus: 'idle',
     activeFilter: 'all'
-}
+});
 
 const filtersSlice = createSlice({
     name: "filters",
@@ -12,7 +15,7 @@ const filtersSlice = createSlice({
     reducers: {
         filtersFetching: state => {state.filtersLoadingStatus = 'loading'},
         filtersFetched: (state, action) => {
-            state.filters = action.payload;
+            filtersAdapter.setAll( state, action.payload);
             state.filtersLoadingStatus = 'idle';
         },
         filtersFetchingError: state => {state.filtersLoadingStatus = 'error'},
@@ -25,6 +28,8 @@ const filtersSlice = createSlice({
 const {reducer, actions} = filtersSlice;
 
 export default reducer;
+
+export const { selectAll } = filtersAdapter.getSelectors(state => state.filters)
 
 export const {
     filtersFetching,

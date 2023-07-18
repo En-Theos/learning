@@ -1,9 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from "classnames"
-import { activeFilterChanget } from '../../slices/filters';
+import { activeFilterChanget, selectAll } from '../../slices/filters';
 
 const HeroesFilters = () => {
-    const { activeFilter ,filters } = useSelector(state => state.filters);
+    const filters = useSelector(selectAll);
+    const activeFilter = useSelector(state => state.filters.activeFilter);
+
     const dispatch = useDispatch();
 
     const classes = (type) => {

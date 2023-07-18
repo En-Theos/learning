@@ -1,34 +1,37 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, createEntityAdapter } from "@reduxjs/toolkit"
 
-const initialState = {
-    heroes: [],
-    heroesLoadingStatus: 'idle',
-}
+const heroesAdapter = createEntityAdapter();
+
+const initialState = heroesAdapter.getInitialState({
+    heroesLoadingStatus: 'idle'
+});
 
 const heroesSlice = createSlice({
     name: "heroes",
     initialState,
     reducers: {
-        heroesFetching: state => {state.heroesLoadingStatus = 'loading'},
+        heroesFetching: state => { state.heroesLoadingStatus = 'loading' },
         heroesFetched: (state, action) => {
-            state.heroes = action.payload;
+            heroesAdapter.setAll(state, action.payload);
             state.heroesLoadingStatus = 'idle';
         },
-        heroesFetchingError: state => {state.heroesLoadingStatus = 'error'},
+        heroesFetchingError: state => { state.heroesLoadingStatus = 'error' },
         heroesAdd: (state, action) => {
-            state.heroes.push(action.payload);
+            heroesAdapter.addOne(state, action.payload);
             state.heroesLoadingStatus = 'idle';
         },
         heroesDelete: (state, action) => {
-            state.heroes = state.heroes.filter(hero => hero.id !== action.payload);
+            heroesAdapter.removeOne(state, action.payload);
             state.heroesLoadingStatus = 'idle';
         }
     }
 });
 
-const {reducer, actions} = heroesSlice;
+const { reducer, actions } = heroesSlice;
 
 export default reducer;
+
+export const { selectAll } = heroesAdapter.getSelectors(state => state.heroes)
 
 export const {
     heroesFetching,
